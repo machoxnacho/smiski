@@ -9,23 +9,14 @@ docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/smiski-backend:lates
 
 docker buildx build --platform linux/amd64 -t smiski-backend:latest .
 
-react-dom.production.min.js:188 TypeError: crypto.randomUUID is not a function
-    at App.tsx:13:19
-fu	@	react-dom.production.min.js:188
-t.callback	@	react-dom.production.min.js:188
-Ba	@	react-dom.production.min.js:156
-ki	@	react-dom.production.min.js:261
-bi	@	react-dom.production.min.js:259
-yi	@	react-dom.production.min.js:258
-(anonymous)	@	react-dom.production.min.js:282
-ws	@	react-dom.production.min.js:280
-is	@	react-dom.production.min.js:272
-Al	@	react-dom.production.min.js:127
-Ss	@	react-dom.production.min.js:285
-(anonymous)	@	react-dom.production.min.js:281
-S	@	scheduler.production.min.js:13
-T	@	scheduler.production.min.js:14
-App.tsx:13 Uncaught TypeError: crypto.randomUUID is not a function
-    at App.tsx:13:19
-(anonymous)	@	App.tsx:13
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = Math.random() * 16 | 0,
+          v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+const userId = useRef(localStorage.getItem("userId") || generateUUID());
+
 

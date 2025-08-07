@@ -6,6 +6,11 @@ docker run -p 5000:5000 \
 
 docker tag smiski-backend:latest <aws_account_id>.dkr.ecr.<region>.amazonaws.com/smiski-backend:latest
 docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/smiski-backend:latest
+
+docker buildx build --platform linux/amd64 -t smiski-backend:latest .
+
+
+
 August 07, 2025 at 03:16
 node:internal/modules/cjs/loader:1143
 smiski-backend

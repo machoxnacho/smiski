@@ -7,16 +7,10 @@ docker run -p 5000:5000 \
 docker tag smiski-backend:latest 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/smiski-backend:latest
 
-docker buildx build --platform linux/amd64 -t smiski-backend:latest .
+USE ME:
+docker buildx build --platform linux/amd64 -t smiski-backend:latest --load .
+docker tag smiski-backend:latest 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
+docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 
-function generateUUID() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    const r = Math.random() * 16 | 0,
-          v = c === 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-}
-
-const userId = useRef(localStorage.getItem("userId") || generateUUID());
 
 

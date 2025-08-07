@@ -7,9 +7,6 @@ docker run -p 5000:5000 \
 docker tag smiski-backend:latest <aws_account_id>.dkr.ecr.<region>.amazonaws.com/smiski-backend:latest
 docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/smiski-backend:latest
 
-Exit code: -
-CannotPullContainerError: no matching manifest for linux/amd64 in the manifest list entries
-
 tag to ecr:
 docker tag smiski-backend:latest <your-account-id>.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 push:
@@ -18,42 +15,45 @@ docker push <your-account-id>.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:lat
 docker buildx build --platform linux/amd64 -t 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest --push .
 
 
-2025-08-07T05:26:47.088Z
-Server running on port 5000
-2025-08-07T05:26:47.089Z
-(node:1) NOTE: The AWS SDK for JavaScript (v2) is in maintenance mode.
-2025-08-07T05:26:47.089Z
-SDK releases are limited to address critical bug fixes and security issues only.
-2025-08-07T05:26:47.089Z
-Please migrate your code to use AWS SDK for JavaScript (v3).
-2025-08-07T05:26:47.089Z
-For more information, check the blog post at https://a.co/cUPnyil
-2025-08-07T05:26:47.089Z
-(Use `node --trace-warnings ...` to show where the warning was created)
-No newer events at this moment. 
-Auto retry paused.
- 
-Resume
- 
 
 
-WARNING: No output specified with docker-container driver. Build result will only remain in the build cache. To push result image into registry use --push or to load image into docker use --load
-
-bntran@a078178d7806 smiski % docker tag smiski-backend:latest 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
-bntran@a078178d7806 smiski % docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
-The push refers to repository [900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend]
-280bbe393e78: Layer already exists 
-f5f9d435c580: Layer already exists 
-b58ee5cb7152: Layer already exists 
-d757d01e4983: Layer already exists 
-354ffb7f5514: Layer already exists 
-7c49806c28b1: Layer already exists 
-1a12b4ea7c0c: Layer already exists 
-1f4f297e4f69: Layer already exists 
-28b4958639f9: Layer already exists 
-ae949b44ff60: Layer already exists 
-4f4fb700ef54: Layer already exists 
-f545ef72a789: Layer already exists 
-4c4eb3d16508: Layer already exists 
-9ae0697c379f: Already exists 
-latest: digest: sha256:7eef37b11f8bcbc8ba63bdea99503ce692759996d6725e197ca4be07f1514197 size: 856
+2025-08-07T05:53:45.488Z
+node:internal/modules/cjs/loader:1143
+2025-08-07T05:53:45.488Z
+throw err;
+2025-08-07T05:53:45.488Z
+^
+2025-08-07T05:53:45.488Z
+Error: Cannot find module 'cors'
+2025-08-07T05:53:45.488Z
+Require stack:
+2025-08-07T05:53:45.488Z
+- /app/backend/server.js
+2025-08-07T05:53:45.488Z
+at Module._resolveFilename (node:internal/modules/cjs/loader:1140:15)
+2025-08-07T05:53:45.488Z
+at Module._load (node:internal/modules/cjs/loader:981:27)
+2025-08-07T05:53:45.488Z
+at Module.require (node:internal/modules/cjs/loader:1231:19)
+2025-08-07T05:53:45.488Z
+at require (node:internal/modules/helpers:177:18)
+2025-08-07T05:53:45.488Z
+at Object.<anonymous> (/app/backend/server.js:4:14)
+2025-08-07T05:53:45.488Z
+at Module._compile (node:internal/modules/cjs/loader:1364:14)
+2025-08-07T05:53:45.488Z
+at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+2025-08-07T05:53:45.488Z
+at Module.load (node:internal/modules/cjs/loader:1203:32)
+2025-08-07T05:53:45.488Z
+at Module._load (node:internal/modules/cjs/loader:1019:12)
+2025-08-07T05:53:45.488Z
+at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:128:12) {
+2025-08-07T05:53:45.488Z
+code: 'MODULE_NOT_FOUND',
+2025-08-07T05:53:45.488Z
+requireStack: [ '/app/backend/server.js' ]
+2025-08-07T05:53:45.488Z
+}
+2025-08-07T05:53:45.488Z
+Node.js v18.20.8

@@ -9,3 +9,9 @@ docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/smiski-backend:lates
 
 Exit code: -
 CannotPullContainerError: no matching manifest for linux/amd64 in the manifest list entries
+
+tag to ecr:
+docker tag smiski-backend:latest <your-account-id>.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
+push:
+docker push <your-account-id>.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
+

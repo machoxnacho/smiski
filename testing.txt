@@ -26,3 +26,11 @@ Error fetching coins: Error [CredentialsError]: Missing credentials in config, i
       originalError: [Object]
     }
   }
+
+
+docker run -p 5000:5000 \
+  -e AWS_ACCESS_KEY_ID=... \
+  -e AWS_SECRET_ACCESS_KEY=... \
+  -e AWS_REGION=us-east-1 \
+  smiski-backend:latest
+

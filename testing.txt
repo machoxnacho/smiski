@@ -18,7 +18,23 @@ docker push <your-account-id>.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:lat
 docker buildx build --platform linux/amd64 -t 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest --push .
 
 
-
+2025-08-07T05:26:47.088Z
+Server running on port 5000
+2025-08-07T05:26:47.089Z
+(node:1) NOTE: The AWS SDK for JavaScript (v2) is in maintenance mode.
+2025-08-07T05:26:47.089Z
+SDK releases are limited to address critical bug fixes and security issues only.
+2025-08-07T05:26:47.089Z
+Please migrate your code to use AWS SDK for JavaScript (v3).
+2025-08-07T05:26:47.089Z
+For more information, check the blog post at https://a.co/cUPnyil
+2025-08-07T05:26:47.089Z
+(Use `node --trace-warnings ...` to show where the warning was created)
+No newer events at this moment. 
+Auto retry paused.
+ 
+Resume
+ 
 
 
 WARNING: No output specified with docker-container driver. Build result will only remain in the build cache. To push result image into registry use --push or to load image into docker use --load

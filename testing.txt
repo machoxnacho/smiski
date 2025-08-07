@@ -15,3 +15,26 @@ docker tag smiski-backend:latest <your-account-id>.dkr.ecr.us-east-1.amazonaws.c
 push:
 docker push <your-account-id>.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 
+
+
+
+WARNING: No output specified with docker-container driver. Build result will only remain in the build cache. To push result image into registry use --push or to load image into docker use --load
+
+bntran@a078178d7806 smiski % docker tag smiski-backend:latest 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
+bntran@a078178d7806 smiski % docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
+The push refers to repository [900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend]
+280bbe393e78: Layer already exists 
+f5f9d435c580: Layer already exists 
+b58ee5cb7152: Layer already exists 
+d757d01e4983: Layer already exists 
+354ffb7f5514: Layer already exists 
+7c49806c28b1: Layer already exists 
+1a12b4ea7c0c: Layer already exists 
+1f4f297e4f69: Layer already exists 
+28b4958639f9: Layer already exists 
+ae949b44ff60: Layer already exists 
+4f4fb700ef54: Layer already exists 
+f545ef72a789: Layer already exists 
+4c4eb3d16508: Layer already exists 
+9ae0697c379f: Already exists 
+latest: digest: sha256:7eef37b11f8bcbc8ba63bdea99503ce692759996d6725e197ca4be07f1514197 size: 856

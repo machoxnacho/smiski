@@ -2,6 +2,15 @@ import React, { useEffect, useState } from 'react';
 import Timer from './Timer';
 import Menu from './Menu';
 
+// Fallback UUID generator
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = Math.random() * 16 | 0,
+          v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 const App: React.FC = () => {
   const [coins, setCoins] = useState<number>(0);
   const [userId, setUserId] = useState<string>('');
@@ -10,7 +19,7 @@ const App: React.FC = () => {
   useEffect(() => {
     let id = localStorage.getItem('userId');
     if (!id) {
-      id = crypto.randomUUID(); // or use Date.now().toString()
+      id = generateUUID(); // Use fallback instead of crypto.randomUUID()
       localStorage.setItem('userId', id);
     }
     setUserId(id);

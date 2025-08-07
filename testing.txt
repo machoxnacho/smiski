@@ -1,4 +1,9 @@
-docker run -p 5000:5000 smiski-backend:latest
+docker run -p 5000:5000 \
+  -e AWS_ACCESS_KEY_ID=... \
+  -e AWS_SECRET_ACCESS_KEY=... \
+  -e AWS_REGION=us-east-1 \
+  smiski-backend:latest
+
 Server running on port 5000
 (node:1) NOTE: The AWS SDK for JavaScript (v2) is in maintenance mode.
  SDK releases are limited to address critical bug fixes and security issues only.
@@ -6,34 +11,41 @@ Server running on port 5000
 Please migrate your code to use AWS SDK for JavaScript (v3).
 For more information, check the blog post at https://a.co/cUPnyil
 (Use `node --trace-warnings ...` to show where the warning was created)
-Error fetching coins: Error [CredentialsError]: Missing credentials in config, if using AWS_CONFIG_FILE, set AWS_SDK_LOAD_CONFIG=1
-    at Timeout.connectTimeout [as _onTimeout] (/app/backend/node_modules/aws-sdk/lib/http/node.js:70:15)
-    at listOnTimeout (node:internal/timers:569:17)
-    at process.processTimers (node:internal/timers:512:7) {
-  code: 'CredentialsError',
-  time: 2025-08-07T03:43:13.173Z,
-  retryable: true,
-  originalError: {
-    message: 'Could not load credentials from any providers',
-    code: 'CredentialsError',
-    time: 2025-08-07T03:43:13.173Z,
-    retryable: true,
-    originalError: {
-      message: 'EC2 Metadata roleName request returned error',
-      code: 'TimeoutError',
-      time: 2025-08-07T03:43:13.172Z,
-      retryable: true,
-      originalError: [Object]
-    }
-  }
-
-
-docker run -p 5000:5000 \
-  -e AWS_ACCESS_KEY_ID=... \
-  -e AWS_SECRET_ACCESS_KEY=... \
-  -e AWS_REGION=us-east-1 \
-  smiski-backend:latest
-
-docker: Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint flamboyant_swartz (34b82e70ead4b50a262d14a40f48af463b8fff79186d444fd0464e6be2985aca): Bind for 0.0.0.0:5000 failed: port is already allocated
-
-Run 'docker run --help' for more information
+DynamoDB GET error: ResourceNotFoundException: Requested resource not found
+    at Request.extractError (/app/backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/app/backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/app/backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/app/backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/app/backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/app/backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /app/backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/app/backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/app/backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/app/backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18) {
+  code: 'ResourceNotFoundException',
+  '[__type]': 'See error.__type for details.',
+  time: 2025-08-07T04:07:16.347Z,
+  requestId: '9QE1KB290SH2717E19IB2CSB7RVV4KQNSO5AEMVJF66Q9ASUAAJG',
+  statusCode: 400,
+  retryable: false,
+  retryDelay: 43.87553640559096
+}
+DynamoDB PUT error: ResourceNotFoundException: Requested resource not found
+    at Request.extractError (/app/backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/app/backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/app/backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/app/backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/app/backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/app/backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /app/backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/app/backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/app/backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/app/backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18) {
+  code: 'ResourceNotFoundException',
+  '[__type]': 'See error.__type for details.',
+  time: 2025-08-07T04:07:50.557Z,
+  requestId: 'A80D605OVPBD6PC3ES5PPB7KJ7VV4KQNSO5AEMVJF66Q9ASUAAJG',
+  statusCode: 400,
+  retryable: false,
+  retryDelay: 26.24621791806009
+}

@@ -28,3 +28,31 @@ unknown: unexpected status from HEAD request to https://900546069136.dkr.ecr.us-
 aws ecr get-login-password --region us-east-1 | \
 docker login --username AWS --password-stdin 900546069136.dkr.ecr.us-east-1.amazonaws.com
 
+
+
+In this project, you will design and implement a highly available, auto-scaling containerized application using Amazon ECS with EC2 launch type. You'll deploy the application behind an Application Load Balancer with WAF protection, demonstrating how to achieve scalability, load balancing, and enhanced security for containerized workloads.
+
+
+Problem Statement:
+
+A customer has developed a containerized application but struggles with deploying it in a scalable, highly available manner. They need a solution that can automatically adjust to varying traffic loads, distribute requests efficiently, and provide protection against common web threats. The current setup lacks elasticity and resilience, leading to performance issues during traffic spikes and potential downtime.
+
+
+Key Learning and Exploration Points:
+
+Technical Deep Dives:
+
+* Amazon ECS architecture and components
+* EC2 launch type vs. Fargate
+* Application Load Balancer features and configuration
+* Auto Scaling for ECS services
+* AWS WAF integration and rule sets
+
+Development Focus:
+
+* Setting up an ECS cluster with EC2 instances
+* Deploying containerized applications on ECS
+* Configuring Application Load Balancer and target groups
+* Implementing auto-scaling based on CPU utilization
+* Integrating WAF with ALB for enhanced security
+

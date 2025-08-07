@@ -9,64 +9,12 @@ docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/smiski-backend:lates
 
 docker buildx build --platform linux/amd64 -t smiski-backend:latest .
 
+ docker buildx build --platform linux/amd64 -t smiski-backend:latest .
 
+[+] Building 0.0s (1/1) FINISHED                                                                            docker-container:awesome_chatterjee
+ => [internal] load build definition from Dockerfile                                                                                       0.0s
+ => => transferring dockerfile: 2B                                                                                                         0.0s
+WARNING: No output specified with docker-container driver. Build result will only remain in the build cache. To push result image into registry use --push or to load image into docker use --load
+ERROR: failed to build: failed to solve: failed to read dockerfile: open Dockerfile: no such file or directory
 
-August 07, 2025 at 03:16
-node:internal/modules/cjs/loader:1143
-smiski-backend
-August 07, 2025 at 03:16
-throw err;
-smiski-backend
-August 07, 2025 at 03:16
-^
-smiski-backend
-August 07, 2025 at 03:16
-Error: Cannot find module 'dotenv'
-smiski-backend
-August 07, 2025 at 03:16
-Require stack:
-smiski-backend
-August 07, 2025 at 03:16
-- /app/backend/server.js
-smiski-backend
-August 07, 2025 at 03:16
-at Module._resolveFilename (node:internal/modules/cjs/loader:1140:15)
-smiski-backend
-August 07, 2025 at 03:16
-at Module._load (node:internal/modules/cjs/loader:981:27)
-smiski-backend
-August 07, 2025 at 03:16
-at Module.require (node:internal/modules/cjs/loader:1231:19)
-smiski-backend
-August 07, 2025 at 03:16
-at require (node:internal/modules/helpers:177:18)
-smiski-backend
-August 07, 2025 at 03:16
-at Object.<anonymous> (/app/backend/server.js:5:1)
-smiski-backend
-August 07, 2025 at 03:16
-at Module._compile (node:internal/modules/cjs/loader:1364:14)
-smiski-backend
-August 07, 2025 at 03:16
-at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
-smiski-backend
-August 07, 2025 at 03:16
-at Module.load (node:internal/modules/cjs/loader:1203:32)
-smiski-backend
-August 07, 2025 at 03:16
-at Module._load (node:internal/modules/cjs/loader:1019:12)
-smiski-backend
-August 07, 2025 at 03:16
-at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:128:12) {
-smiski-backend
-August 07, 2025 at 03:16
-code: 'MODULE_NOT_FOUND',
-smiski-backend
-August 07, 2025 at 03:16
-requireStack: [ '/app/backend/server.js' ]
-smiski-backend
-August 07, 2025 at 03:16
-}
-smiski-backend
-August 07, 2025 at 03:16
-Node.js v18.20.8
+View build details: docker-desktop://dashboard/build/awesome_chatterjee/awesome_chatterjee0/0r4k8fhvrz9wflgfvxl53vc2b

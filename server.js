@@ -15,17 +15,18 @@ const TABLE_NAME = 'PomodoroUser';
 app.use(cors());
 app.use(express.json());
 
-// ✅ Health Check Route
+// ✅ Health Check
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
 
-// ✅ Serve React Frontend
+// ✅ Serve frontend build (React)
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-// ✅ Get Coins
-app.get('/coins', async (req, res) => {
-  const userId = req.headers['x-user-id'] || 'test-user-123';
+// ✅ Get Coins – now using query param instead of header
+app.get('/api/coins', async (req, res) => {
+  const userId = req.query.userId || 'test-user-123';
+
   const params = {
     TableName: TABLE_NAME,
     Key: { userId }
@@ -41,9 +42,9 @@ app.get('/coins', async (req, res) => {
   }
 });
 
-// ✅ Add Coins
-app.post('/add-coins', async (req, res) => {
-  const userId = req.headers['x-user-id'] || 'test-user-123';
+// ✅ Add Coins – also uses query param
+app.post('/api/add-coins', async (req, res) => {
+  const userId = req.query.userId || 'test-user-123';
   const coinsToAdd = req.body.coins || 0;
 
   const params = {
@@ -66,12 +67,12 @@ app.post('/add-coins', async (req, res) => {
   }
 });
 
-// ✅ Fallback route for React Router
+// ✅ React Router Fallback
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
-// ✅ Start Server
+// ✅ Start server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

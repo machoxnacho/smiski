@@ -12,7 +12,7 @@ docker buildx build --platform linux/amd64 -t smiski-backend:latest --load .
 docker tag smiski-backend:latest 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 
-GET http://smiski-alb-1737510671.us-east-1.elb.amazonaws.com/api/coins?userId=ac859c18-9c92-4abf-98c5-fa6762bd8daf 504 (Gateway Time-out)
+App.tsx:29  GET http://smiski-alb-1737510671.us-east-1.elb.amazonaws.com/api/coins?userId=ac859c18-9c92-4abf-98c5-fa6762bd8daf 504 (Gateway Time-out)
 (anonymous) @ App.tsx:29
 (anonymous) @ App.tsx:37
 ri @ react-dom.production.min.js:243

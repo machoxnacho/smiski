@@ -2,42 +2,45 @@ import React, { useState, useEffect } from 'react';
 
 type TimerMode = 'pomodoro' | 'break';
 
-const Timer: React.FC<{ onCoinsEarned: (amount: number) => void }> = ({ onCoinsEarned }) => {
-  const pomodoroDuration = 25 * 60; // 25 mins
-  const breakDuration = 5 * 60;     // 5 mins
+const Timer: React.FC<{ onCoinsEarned: (newTotal: number) => void }> = ({ onCoinsEarned }) => {
+  const pomodoroDuration = 25; // For testing: 25 seconds
+  const breakDuration = 5;     // For testing: 5 seconds
 
   const [seconds, setSeconds] = useState(pomodoroDuration);
   const [active, setActive] = useState(false);
   const [mode, setMode] = useState<TimerMode>('pomodoro');
 
-  // Effect to handle countdown
+  // Handle countdown and session transitions
   useEffect(() => {
     let interval: NodeJS.Timeout;
+
+    const handleEnd = async () => {
+      if (mode === 'pomodoro') {
+        // Reward coins, then switch to break
+        await earnCoins(5);
+        setMode('break');
+        setSeconds(breakDuration);
+        setActive(false);
+      } else {
+        // End of break, reset to pomodoro
+        setMode('pomodoro');
+        setSeconds(pomodoroDuration);
+        setActive(false);
+      }
+    };
 
     if (active && seconds > 0) {
       interval = setInterval(() => {
         setSeconds(prev => prev - 1);
       }, 1000);
     } else if (active && seconds === 0) {
-      // Timer ended
-      if (mode === 'pomodoro') {
-        // Reward coins
-        earnCoins(5);
-        // Start break
-        setMode('break');
-        setSeconds(breakDuration);
-        setActive(false); // Require user to manually start break
-      } else {
-        // End of break → reset to Pomodoro
-        setMode('pomodoro');
-        setSeconds(pomodoroDuration);
-        setActive(false);
-      }
+      handleEnd();
     }
 
     return () => clearInterval(interval);
   }, [active, seconds, mode]);
 
+  // Call backend to add coins
   const earnCoins = async (amount: number) => {
     try {
       const res = await fetch('/api/add-coins', {
@@ -46,12 +49,13 @@ const Timer: React.FC<{ onCoinsEarned: (amount: number) => void }> = ({ onCoinsE
         body: JSON.stringify({ amount })
       });
       const data = await res.json();
-      onCoinsEarned(data.coins);
+      onCoinsEarned(data.coins); // Update UI with new total
     } catch (err) {
       console.error('Failed to add coins:', err);
     }
   };
 
+  // Timer control buttons
   const startTimer = () => setActive(true);
   const pauseTimer = () => setActive(false);
   const stopTimer = () => {

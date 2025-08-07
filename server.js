@@ -1,77 +1,71 @@
 const express = require('express');
-const AWS = require('aws-sdk');
 const path = require('path');
+const AWS = require('aws-sdk');
+const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-const TABLE_NAME = 'PomodoroUser'; // <-- your existing DynamoDB table
+const port = 5000;
 
-AWS.config.update({
-  region: process.env.AWS_REGION || 'us-east-1',
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-});
-
-const dynamoDB = new AWS.DynamoDB.DocumentClient();
-
+app.use(cors());
 app.use(express.json());
+
+// Use local DynamoDB credentials or role-based credentials
+AWS.config.update({ region: 'us-east-1' });
+
+const dynamo = new AWS.DynamoDB.DocumentClient();
+const TABLE_NAME = 'PomodoroUser';
+
 app.use(express.static(path.join(__dirname, 'build')));
 
-// GET /api/coins?userId=abc123
-app.get('/api/coins', async (req, res) => {
-  const userId = req.query.userId;
-  if (!userId) return res.status(400).json({ error: 'Missing userId' });
-
+// Get coins
+app.get('/coins', async (req, res) => {
+  const userId = req.headers['x-user-id'] || 'test-user-123';
   try {
-    const result = await dynamoDB.get({
-      TableName: TABLE_NAME,
-      Key: { userId }
-    }).promise();
+    const result = await dynamo
+      .get({
+        TableName: TABLE_NAME,
+        Key: { userId },
+      })
+      .promise();
 
-    const coins = result.Item?.coins ?? 0;
-    res.json({ coins });
-  } catch (error) {
-    console.error('DynamoDB GET error:', error);
+    res.json({ coins: result.Item?.coins || 0 });
+  } catch (err) {
+    console.error('DynamoDB GET error:', err);
     res.status(500).json({ error: 'Failed to fetch coins' });
   }
 });
 
-// POST /api/add-coins with { amount: 5, userId: "abc123" }
-app.post('/api/add-coins', async (req, res) => {
-  const { amount, userId } = req.body;
-  if (!userId || typeof amount !== 'number') {
-    return res.status(400).json({ error: 'Missing userId or amount' });
-  }
+// Update coins
+app.post('/coins', async (req, res) => {
+  const userId = req.headers['x-user-id'] || 'test-user-123';
+  const { coinsToAdd } = req.body;
 
   try {
-    const result = await dynamoDB.get({
-      TableName: TABLE_NAME,
-      Key: { userId }
-    }).promise();
+    await dynamo
+      .update({
+        TableName: TABLE_NAME,
+        Key: { userId },
+        UpdateExpression: 'ADD coins :val',
+        ExpressionAttributeValues: {
+          ':val': coinsToAdd,
+        },
+        ReturnValues: 'UPDATED_NEW',
+      })
+      .promise();
 
-    const currentCoins = result.Item?.coins ?? 0;
-    const newTotal = currentCoins + amount;
-
-    await dynamoDB.put({
-      TableName: TABLE_NAME,
-      Item: {
-        userId,
-        coins: newTotal
-      }
-    }).promise();
-
-    res.json({ coins: newTotal });
-  } catch (error) {
-    console.error('DynamoDB PUT error:', error);
+    res.json({ message: 'Coins updated successfully' });
+  } catch (err) {
+    console.error('DynamoDB PUT error:', err);
     res.status(500).json({ error: 'Failed to update coins' });
   }
 });
 
-// Serve React frontend
+// Fallback: serve React app for any unknown route
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
+

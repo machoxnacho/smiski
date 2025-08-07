@@ -10,10 +10,13 @@ FROM node:18
 
 WORKDIR /app
 COPY backend ./backend
-COPY --from=builder /app/frontend/build ./backend/build
+COPY --from=builder /app/frontend/build ./backend/frontend
 
 WORKDIR /app/backend
 RUN npm install
 
-EXPOSE 5000
+# ✅ Listen on port 80 instead of 5000
+EXPOSE 80
+
 CMD ["node", "server.js"]
+

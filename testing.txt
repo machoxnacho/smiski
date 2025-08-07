@@ -41,23 +41,3 @@ S @ scheduler.production.min.js:13
 T @ scheduler.production.min.js:14
 Timer.tsx:55 Failed to add coins: SyntaxError: Unexpected token '<', "<html>
 <h"... is not valid JSON
-f @ Timer.tsx:55
-await in f
-(anonymous) @ Timer.tsx:23
-(anonymous) @ Timer.tsx:39
-ri @ react-dom.production.min.js:243
-Ss @ react-dom.production.min.js:285
-(anonymous) @ react-dom.production.min.js:281
-S @ scheduler.production.min.js:13
-T @ scheduler.production.min.js:14
-Timer.tsx:47  POST http://smiski-alb-1737510671.us-east-1.elb.amazonaws.com/api/add-coins 504 (Gateway Time-out)
-f @ Timer.tsx:47
-(anonymous) @ Timer.tsx:23
-(anonymous) @ Timer.tsx:39
-ri @ react-dom.production.min.js:243
-Ss @ react-dom.production.min.js:285
-(anonymous) @ react-dom.production.min.js:281
-S @ scheduler.production.min.js:13
-T @ scheduler.production.min.js:14
-Timer.tsx:55 Failed to add coins: SyntaxError: Unexpected token '<', "<html>
-<h"... is not valid JSON

@@ -34,3 +34,6 @@ docker run -p 5000:5000 \
   -e AWS_REGION=us-east-1 \
   smiski-backend:latest
 
+docker: Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint flamboyant_swartz (34b82e70ead4b50a262d14a40f48af463b8fff79186d444fd0464e6be2985aca): Bind for 0.0.0.0:5000 failed: port is already allocated
+
+Run 'docker run --help' for more information

@@ -24,3 +24,7 @@ d757d01e4983: Waiting
 b58ee5cb7152: Waiting 
 f545ef72a789: Waiting 
 unknown: unexpected status from HEAD request to https://900546069136.dkr.ecr.us-east-1.amazonaws.com/v2/smiski-backend/blobs/sha256:9ae0697c379fc0e81e1069c304b3cb73c5ce7f08611fea77c20ada4cad93d8bd: 403 Forbidden
+
+aws ecr get-login-password --region us-east-1 | \
+docker login --username AWS --password-stdin 900546069136.dkr.ecr.us-east-1.amazonaws.com
+

@@ -12,23 +12,8 @@ docker buildx build --platform linux/amd64 -t smiski-backend:latest --load .
 docker tag smiski-backend:latest 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 
-curl -X POST http://localhost:80/api/add-coins \
+curl -X POST http://localhost:80/add-coins \
   -H "Content-Type: application/json" \
   -H "x-user-id: test-user-123" \
   -d '{"coins": 5}'
 
-
- curl -X POST http://localhost:80/api/add-coins \
-  -H "Content-Type: application/json" \
-  -H "x-user-id: test-user-123" \
-  -d '{"coins": 5}'
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Error</title>
-</head>
-<body>
-<pre>Cannot POST /api/add-coins</pre>
-</body>
-</html>

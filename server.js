@@ -15,17 +15,21 @@ const TABLE_NAME = 'PomodoroUser';
 app.use(cors());
 app.use(express.json());
 
-// ✅ Health Check Route (used by ALB)
+// ✅ Health check
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
 
-// ✅ API: Get Total Coins
+// ✅ Serve frontend
+app.use(express.static(path.join(__dirname, 'frontend')));
+
+// ✅ API routes
 app.get('/api/coins', async (req, res) => {
-  const userId = req.query.userId || req.headers['x-user-id'] || 'test-user-123';
+  const userId = req.query.userId || 'test-user-123';
+
   const params = {
     TableName: TABLE_NAME,
-    Key: { userId }
+    Key: { userId },
   };
 
   try {
@@ -38,7 +42,6 @@ app.get('/api/coins', async (req, res) => {
   }
 });
 
-// ✅ API: Add Coins
 app.post('/api/add-coins', async (req, res) => {
   const userId = req.headers['x-user-id'] || 'test-user-123';
   const coinsToAdd = req.body.coins || 0;
@@ -49,9 +52,9 @@ app.post('/api/add-coins', async (req, res) => {
     UpdateExpression: 'SET coins = if_not_exists(coins, :zero) + :coins',
     ExpressionAttributeValues: {
       ':coins': coinsToAdd,
-      ':zero': 0
+      ':zero': 0,
     },
-    ReturnValues: 'UPDATED_NEW'
+    ReturnValues: 'UPDATED_NEW',
   };
 
   try {
@@ -63,15 +66,11 @@ app.post('/api/add-coins', async (req, res) => {
   }
 });
 
-// ✅ Serve React Frontend
-app.use(express.static(path.join(__dirname, 'frontend')));
-
-// ✅ Fallback Route for React Router
+// ✅ Fallback route for React frontend
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
-// ✅ Start Server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

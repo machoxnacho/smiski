@@ -18,7 +18,7 @@ curl -X POST http://localhost:80/add-coins \
   -d '{"coins": 5}'
 
 
-POST http://smiski-alb-1737510671.us-east-1.elb.amazonaws.com/api/add-coins 404 (Not Found)
+Timer.tsx:47  POST http://smiski-alb-1737510671.us-east-1.elb.amazonaws.com/api/add-coins 404 (Not Found)
 f @ Timer.tsx:47
 (anonymous) @ Timer.tsx:23
 (anonymous) @ Timer.tsx:39
@@ -28,3 +28,22 @@ Ss @ react-dom.production.min.js:285
 S @ scheduler.production.min.js:13
 T @ scheduler.production.min.js:14
 Timer.tsx:55 Failed to add coins: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+f @ Timer.tsx:55
+await in f
+(anonymous) @ Timer.tsx:23
+(anonymous) @ Timer.tsx:39
+ri @ react-dom.production.min.js:243
+Ss @ react-dom.production.min.js:285
+(anonymous) @ react-dom.production.min.js:281
+S @ scheduler.production.min.js:13
+T @ scheduler.production.min.js:14
+App.tsx:29  GET http://smiski-alb-1737510671.us-east-1.elb.amazonaws.com/api/coins?userId=ac859c18-9c92-4abf-98c5-fa6762bd8daf 504 (Gateway Time-out)
+(anonymous) @ App.tsx:29
+(anonymous) @ App.tsx:37
+ri @ react-dom.production.min.js:243
+Ss @ react-dom.production.min.js:285
+(anonymous) @ react-dom.production.min.js:281
+S @ scheduler.production.min.js:13
+T @ scheduler.production.min.js:14
+App.tsx:33 Failed to fetch coins: SyntaxError: Unexpected token '<', "<html>
+<h"... is not valid JSON

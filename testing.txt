@@ -6,6 +6,13 @@ docker run -p 5000:5000 \
 
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 900546069136.dkr.ecr.us-east-1.amazonaws.com
 
+USE ME:
+docker buildx build --platform linux/arm64 -t smiski-backend:latest --load .
+docker tag smiski-backend:latest 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
+docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
+
+
+
 import React, { useEffect, useState, useRef } from 'react';
 
 interface TimerProps {

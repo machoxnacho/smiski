@@ -12,12 +12,31 @@ docker buildx build --platform linux/amd64 -t smiski-backend:latest --load .
 docker tag smiski-backend:latest 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 
-curl -X POST http://localhost:80/add-coins \
-  -H "Content-Type: application/json" \
-  -H "x-user-id: test-user-123" \
-  -d '{"coins": 5}'
+Project Announcement/Summary:
 
-curl "http://smiski-alb-1737510671.us-east-1.elb.amazonaws.com/api/coins?userId=test-user-123"
+In this project, you will design and implement a highly available, auto-scaling containerized application using Amazon ECS with EC2 launch type. You'll deploy the application behind an Application Load Balancer with WAF protection, demonstrating how to achieve scalability, load balancing, and enhanced security for containerized workloads.
 
-curl http://smiski-alb-1737510671.us-east-1.elb.amazonaws.com/api/coins?userId=test-user-123
-zsh: no matches found: http://smiski-alb-1737510671.us-east-1.elb.amazonaws.com/api/coins?userId=test-user-123
+
+Problem Statement:
+
+A customer has developed a containerized application but struggles with deploying it in a scalable, highly available manner. They need a solution that can automatically adjust to varying traffic loads, distribute requests efficiently, and provide protection against common web threats. The current setup lacks elasticity and resilience, leading to performance issues during traffic spikes and potential downtime.
+
+
+Key Learning and Exploration Points:
+
+Technical Deep Dives:
+
+* Amazon ECS architecture and components
+* EC2 launch type vs. Fargate
+* Application Load Balancer features and configuration
+* Auto Scaling for ECS services
+* AWS WAF integration and rule sets
+
+Development Focus:
+
+* Setting up an ECS cluster with EC2 instances
+* Deploying containerized applications on ECS
+* Configuring Application Load Balancer and target groups
+* Implementing auto-scaling based on CPU utilization
+* Integrating WAF with ALB for enhanced security
+

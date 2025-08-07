@@ -26,7 +26,7 @@ const App: React.FC = () => {
 
     const fetchCoins = async () => {
       try {
-        const res = await fetch(`/api/coins?userId=${id}`);
+        const res = await fetch(`http://smiski-alb-1737510671.us-east-1.elb.amazonaws.com/api/coins?userId=${id}`);
         const data = await res.json();
         setCoins(data.coins);
       } catch (err) {

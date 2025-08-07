@@ -18,19 +18,13 @@ curl -X POST http://localhost:80/add-coins \
   -d '{"coins": 5}'
 
 
-docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest         
-The push refers to repository [900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend]
-1f4f297e4f69: Waiting 
-b58ee5cb7152: Waiting 
-b492185a577c: Waiting 
-4c4eb3d16508: Waiting 
-ef5dc0396ac5: Waiting 
-28b4958639f9: Waiting 
-280bbe393e78: Waiting 
-1a12b4ea7c0c: Waiting 
-abd045f74f66: Waiting 
-4f4fb700ef54: Waiting 
-354ffb7f5514: Waiting 
-d757d01e4983: Waiting 
-07d5b9861408: Waiting 
-unknown: unexpected status from HEAD request to https://900546069136.dkr.ecr.us-east-1.amazonaws.com/v2/smiski-backend/blobs/sha256:ef5dc0396ac59ca5b52d817130117e1d8854d4050235efdc66196d9777564e9c: 403 Forbidden
+POST http://smiski-alb-1737510671.us-east-1.elb.amazonaws.com/api/add-coins 404 (Not Found)
+f @ Timer.tsx:47
+(anonymous) @ Timer.tsx:23
+(anonymous) @ Timer.tsx:39
+ri @ react-dom.production.min.js:243
+Ss @ react-dom.production.min.js:285
+(anonymous) @ react-dom.production.min.js:281
+S @ scheduler.production.min.js:13
+T @ scheduler.production.min.js:14
+Timer.tsx:55 Failed to add coins: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON

@@ -22,26 +22,11 @@ const App: React.FC = () => {
     fetchCoins();
   }, []);
 
-  const handleAddCoins = async () => {
-    try {
-      const res = await fetch('/api/add-coins', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: 10 })
-      });
-      const data = await res.json();
-      setCoins(data.coins);
-    } catch (err) {
-      console.error('Failed to add coins:', err);
-    }
-  };
-
   return (
     <div style={{ padding: '2rem' }}>
       <h1>Smiski Pomodoro</h1>
-      {loading ? <p>Loading coins...</p> : <p><strong>Coins:</strong> {coins}</p>}
-      <button onClick={handleAddCoins}>+10 Coins</button>
-      <Timer />
+      {loading ? <p>Loading coins...</p> : <p><strong>Total Coins:</strong> {coins}</p>}
+      <Timer onCoinsEarned={(newTotal) => setCoins(newTotal)} />
       <Menu />
     </div>
   );

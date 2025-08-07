@@ -12,6 +12,8 @@ docker buildx build --platform linux/amd64 -t smiski-backend:latest --load .
 docker tag smiski-backend:latest 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 
-coins:1  Failed to load resource: the server responded with a status of 504 (Gateway Time-out)
-App.tsx:33 Failed to fetch coins: SyntaxError: Unexpected token '<', "<html>
-<h"... is not valid JSON
+curl -X POST http://localhost:80/api/add-coins \
+  -H "Content-Type: application/json" \
+  -H "x-user-id: test-user-123" \
+  -d '{"coins": 5}'
+

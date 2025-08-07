@@ -5,7 +5,7 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 80;
 
 // DynamoDB Setup
 AWS.config.update({ region: 'us-east-1' });
@@ -15,7 +15,7 @@ const TABLE_NAME = 'PomodoroUser';
 app.use(cors());
 app.use(express.json());
 
-// ✅ Health Check Route (for ALB)
+// ✅ Health Check Route
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
@@ -23,10 +23,9 @@ app.get('/health', (req, res) => {
 // ✅ Serve React Frontend
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-// ✅ Get Coin Count
+// ✅ Get Coins
 app.get('/coins', async (req, res) => {
   const userId = req.headers['x-user-id'] || 'test-user-123';
-
   const params = {
     TableName: TABLE_NAME,
     Key: { userId }
@@ -42,7 +41,7 @@ app.get('/coins', async (req, res) => {
   }
 });
 
-// ✅ Update Coins
+// ✅ Add Coins
 app.post('/add-coins', async (req, res) => {
   const userId = req.headers['x-user-id'] || 'test-user-123';
   const coinsToAdd = req.body.coins || 0;
@@ -67,7 +66,7 @@ app.post('/add-coins', async (req, res) => {
   }
 });
 
-// ✅ Fallback: Serve index.html for React Router
+// ✅ Fallback route for React Router
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });

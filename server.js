@@ -1,9 +1,23 @@
-// Replace:
-const TEST_USER_ID = 'test-user-123';
+const express = require('express');
+const AWS = require('aws-sdk');
+const path = require('path');
 
-// Remove it completely, and update your routes:
+const app = express();
+const PORT = process.env.PORT || 5000;
+const TABLE_NAME = 'PomodoroUser'; // <-- your existing DynamoDB table
 
-// Get coins
+AWS.config.update({
+  region: process.env.AWS_REGION || 'us-east-1',
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
+
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
+
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'build')));
+
+// GET /api/coins?userId=abc123
 app.get('/api/coins', async (req, res) => {
   const userId = req.query.userId;
   if (!userId) return res.status(400).json({ error: 'Missing userId' });
@@ -22,7 +36,7 @@ app.get('/api/coins', async (req, res) => {
   }
 });
 
-// Add coins
+// POST /api/add-coins with { amount: 5, userId: "abc123" }
 app.post('/api/add-coins', async (req, res) => {
   const { amount, userId } = req.body;
   if (!userId || typeof amount !== 'number') {
@@ -51,4 +65,13 @@ app.post('/api/add-coins', async (req, res) => {
     console.error('DynamoDB PUT error:', error);
     res.status(500).json({ error: 'Failed to update coins' });
   }
+});
+
+// Serve React frontend
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

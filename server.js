@@ -1,40 +1,38 @@
-const express = require('express');
-const AWS = require('aws-sdk');
-const path = require('path');
-
-const app = express();
-const PORT = process.env.PORT || 5000;
-const TABLE_NAME = 'SmiskiUsers';
+// Replace:
 const TEST_USER_ID = 'test-user-123';
 
-AWS.config.update({ region: 'us-east-1' }); // Change to your region
-const dynamoDB = new AWS.DynamoDB.DocumentClient();
+// Remove it completely, and update your routes:
 
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'build')));
-
+// Get coins
 app.get('/api/coins', async (req, res) => {
+  const userId = req.query.userId;
+  if (!userId) return res.status(400).json({ error: 'Missing userId' });
+
   try {
     const result = await dynamoDB.get({
       TableName: TABLE_NAME,
-      Key: { userId: TEST_USER_ID }
+      Key: { userId }
     }).promise();
 
     const coins = result.Item?.coins ?? 0;
     res.json({ coins });
-  } catch (err) {
-    console.error('Error fetching coins:', err);
+  } catch (error) {
+    console.error('DynamoDB GET error:', error);
     res.status(500).json({ error: 'Failed to fetch coins' });
   }
 });
 
+// Add coins
 app.post('/api/add-coins', async (req, res) => {
-  const { amount } = req.body;
+  const { amount, userId } = req.body;
+  if (!userId || typeof amount !== 'number') {
+    return res.status(400).json({ error: 'Missing userId or amount' });
+  }
 
   try {
     const result = await dynamoDB.get({
       TableName: TABLE_NAME,
-      Key: { userId: TEST_USER_ID }
+      Key: { userId }
     }).promise();
 
     const currentCoins = result.Item?.coins ?? 0;
@@ -43,22 +41,14 @@ app.post('/api/add-coins', async (req, res) => {
     await dynamoDB.put({
       TableName: TABLE_NAME,
       Item: {
-        userId: TEST_USER_ID,
+        userId,
         coins: newTotal
       }
     }).promise();
 
     res.json({ coins: newTotal });
-  } catch (err) {
-    console.error('Error adding coins:', err);
-    res.status(500).json({ error: 'Failed to add coins' });
+  } catch (error) {
+    console.error('DynamoDB PUT error:', error);
+    res.status(500).json({ error: 'Failed to update coins' });
   }
-});
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
 });

@@ -17,3 +17,18 @@ curl -X POST http://localhost:80/api/add-coins \
   -H "x-user-id: test-user-123" \
   -d '{"coins": 5}'
 
+
+ curl -X POST http://localhost:80/api/add-coins \
+  -H "Content-Type: application/json" \
+  -H "x-user-id: test-user-123" \
+  -d '{"coins": 5}'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Cannot POST /api/add-coins</pre>
+</body>
+</html>

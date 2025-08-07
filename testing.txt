@@ -17,6 +17,7 @@ curl -X POST http://localhost:80/add-coins \
   -H "x-user-id: test-user-123" \
   -d '{"coins": 5}'
 
+curl "http://smiski-alb-1737510671.us-east-1.elb.amazonaws.com/api/coins?userId=test-user-123"
 
 curl http://smiski-alb-1737510671.us-east-1.elb.amazonaws.com/api/coins?userId=test-user-123
 zsh: no matches found: http://smiski-alb-1737510671.us-east-1.elb.amazonaws.com/api/coins?userId=test-user-123

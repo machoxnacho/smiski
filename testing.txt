@@ -6,3 +6,21 @@ docker run -p 5000:5000 \
 
 docker tag smiski-backend:latest <aws_account_id>.dkr.ecr.<region>.amazonaws.com/smiski-backend:latest
 docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/smiski-backend:latest
+
+docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
+The push refers to repository [900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend]
+28b4958639f9: Waiting 
+ae949b44ff60: Waiting 
+f5f9d435c580: Waiting 
+280bbe393e78: Waiting 
+1f4f297e4f69: Waiting 
+1a12b4ea7c0c: Waiting 
+4f4fb700ef54: Waiting 
+354ffb7f5514: Waiting 
+d757d01e4983: Waiting 
+9ae0697c379f: Waiting 
+4c4eb3d16508: Waiting 
+7c49806c28b1: Waiting 
+b58ee5cb7152: Waiting 
+f545ef72a789: Waiting 
+unknown: unexpected status from HEAD request to https://900546069136.dkr.ecr.us-east-1.amazonaws.com/v2/smiski-backend/blobs/sha256:9ae0697c379fc0e81e1069c304b3cb73c5ce7f08611fea77c20ada4cad93d8bd: 403 Forbidden

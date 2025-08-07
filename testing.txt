@@ -4,7 +4,7 @@ docker run -p 5000:5000 \
   -e AWS_REGION=us-east-1 \
   smiski-backend:latest
 
-docker tag smiski-backend:latest <aws_account_id>.dkr.ecr.<region>.amazonaws.com/smiski-backend:latest
+docker tag smiski-backend:latest 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/smiski-backend:latest
 
 docker buildx build --platform linux/amd64 -t smiski-backend:latest .

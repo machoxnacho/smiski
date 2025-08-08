@@ -13,29 +13,20 @@ docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 
 
 
-#!/bin/bash
-
-# ===== CONFIGURATION =====
-ALB_DNS="smiski-alb-1234567890.us-east-1.elb.amazonaws.com"  # <-- REPLACE with your ALB DNS
-CONCURRENCY=50       # Number of concurrent users
-DURATION="5m"        # Test duration
-PLATFORM="linux_amd64"  # Change to "darwin_amd64" if Mac Intel, "darwin_arm64" if Mac M1/M2
-
-# ===== INSTALL hey =====
-echo "[INFO] Downloading hey load testing tool..."
-curl -L -o hey.tgz https://github.com/rakyll/hey/releases/latest/download/hey_${PLATFORM}.tar.gz
-tar -xzf hey.tgz
-chmod +x hey
-sudo mv hey /usr/local/bin/
-
-# ===== VERIFY INSTALL =====
-echo "[INFO] hey version:"
-hey --version
-
-# ===== RUN LOAD TEST =====
-echo "[INFO] Running load test against $ALB_DNS for $DURATION at $CONCURRENCY concurrency..."
-hey -z $DURATION -c $CONCURRENCY http://$ALB_DNS/
-
-echo "[INFO] Load test finished. Check ECS tasks and CloudWatch metrics to confirm scaling."
-
+[INFO] Downloading hey load testing tool...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100     9  100     9    0     0     53      0 --:--:-- --:--:-- --:--:--    53
+tar: Error opening archive: Unrecognized archive format
+chmod: hey: No such file or directory
+Password:
+mv: rename hey to /usr/local/bin/hey: No such file or directory
+[INFO] hey version:
+./cloudwatch.sh: line 18: hey: command not found
+[INFO] Running load test against smiski-alb-1737510671.us-east-1.elb.amazonaws.com for 5m at 50 concurrency...
+./cloudwatch.sh: line 22: hey: command not found
+[INFO] Load test finished. Check ECS tasks and CloudWatch metrics to confirm scaling.
+bntran@a078178d7806 Downloads % hey --version
+zsh: command not found: hey
 

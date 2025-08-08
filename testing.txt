@@ -13,20 +13,30 @@ docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 
 
 
-[INFO] Downloading hey load testing tool...
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100     9  100     9    0     0     53      0 --:--:-- --:--:-- --:--:--    53
-tar: Error opening archive: Unrecognized archive format
-chmod: hey: No such file or directory
-Password:
-mv: rename hey to /usr/local/bin/hey: No such file or directory
-[INFO] hey version:
-./cloudwatch.sh: line 18: hey: command not found
-[INFO] Running load test against smiski-alb-1737510671.us-east-1.elb.amazonaws.com for 5m at 50 concurrency...
-./cloudwatch.sh: line 22: hey: command not found
-[INFO] Load test finished. Check ECS tasks and CloudWatch metrics to confirm scaling.
-bntran@a078178d7806 Downloads % hey --version
-zsh: command not found: hey
+#!/bin/bash
+set -e
+
+ALB_DNS="smiski-alb-1737510671.us-east-1.elb.amazonaws.com" # <-- change if needed
+
+echo "[INFO] Detecting architecture..."
+ARCH=$(uname -m)
+if [ "$ARCH" = "arm64" ]; then
+  URL="https://github.com/rakyll/hey/releases/download/v0.1.4/hey_darwin_arm64.tar.gz"
+else
+  URL="https://github.com/rakyll/hey/releases/download/v0.1.4/hey_darwin_amd64.tar.gz"
+fi
+echo "[INFO] Architecture: $ARCH"
+echo "[INFO] Downloading hey from $URL..."
+
+curl -L -o hey.tar.gz "$URL"
+tar -xzf hey.tar.gz
+chmod +x hey
+sudo mv hey /usr/local/bin/hey
+rm hey.tar.gz
+
+echo "[INFO] hey version: $(hey --version)"
+echo "[INFO] Running load test against $ALB_DNS for 5 minutes at 50 concurrency..."
+hey -z 5m -c 50 "http://$ALB_DNS/"
+echo "[INFO] Load test finished. Check ECS tasks and CloudWatch metrics to confirm scaling."
+
 

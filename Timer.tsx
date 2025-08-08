@@ -1,85 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
-type TimerMode = 'pomodoro' | 'break';
-
-interface Props {
-  onCoinsEarned: (newTotal: number) => void;
+interface TimerProps {
+  onCoinsEarned: () => void;
   userId: string;
 }
 
-const Timer: React.FC<Props> = ({ onCoinsEarned, userId }) => {
-  const pomodoroDuration = 25;
-  const breakDuration = 5;
+const Timer: React.FC<TimerProps> = () => {
+  const [secondsLeft, setSecondsLeft] = useState(25); // 25s work
+  const [isRunning, setIsRunning] = useState(false);
+  const [mode, setMode] = useState<'work' | 'break'>('work');
 
-  const [seconds, setSeconds] = useState(pomodoroDuration);
-  const [active, setActive] = useState(false);
-  const [mode, setMode] = useState<TimerMode>('pomodoro');
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const resetTimer = () => {
+    setSecondsLeft(mode === 'work' ? 25 : 5);
+    setIsRunning(false);
+  };
+
+  const switchMode = () => {
+    const newMode = mode === 'work' ? 'break' : 'work';
+    setMode(newMode);
+    setSecondsLeft(newMode === 'work' ? 25 : 5);
+    setIsRunning(false);
+  };
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-
-    const handleEnd = async () => {
-      if (mode === 'pomodoro') {
-        await earnCoins(5);
-        setMode('break');
-        setSeconds(breakDuration);
-        setActive(false);
-      } else {
-        setMode('pomodoro');
-        setSeconds(pomodoroDuration);
-        setActive(false);
-      }
-    };
-
-    if (active && seconds > 0) {
-      interval = setInterval(() => {
-        setSeconds(prev => prev - 1);
+    if (isRunning && secondsLeft > 0) {
+      timerRef.current = setTimeout(() => {
+        setSecondsLeft((prev) => prev - 1);
       }, 1000);
-    } else if (active && seconds === 0) {
-      handleEnd();
+    } else if (isRunning && secondsLeft === 0) {
+      switchMode(); // Auto-switch between work and break
     }
 
-    return () => clearInterval(interval);
-  }, [active, seconds, mode]);
-
-  const earnCoins = async (amount: number) => {
-    try {
-      const res = await fetch('/api/add-coins', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount, userId })
-      });
-      const data = await res.json();
-      onCoinsEarned(data.coins);
-    } catch (err) {
-      console.error('Failed to add coins:', err);
-    }
-  };
-
-  const startTimer = () => setActive(true);
-  const pauseTimer = () => setActive(false);
-  const stopTimer = () => {
-    setActive(false);
-    setSeconds(mode === 'pomodoro' ? pomodoroDuration : breakDuration);
-  };
-
-  const formatTime = (secs: number) => {
-    const m = Math.floor(secs / 60);
-    const s = secs % 60;
-    return `${m}:${String(s).padStart(2, '0')}`;
-  };
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [isRunning, secondsLeft]);
 
   return (
     <div>
-      <h2>{mode === 'pomodoro' ? 'Pomodoro Time' : 'Break Time'}</h2>
-      <h3>{formatTime(seconds)}</h3>
-      {!active && <button onClick={startTimer}>Start</button>}
-      {active && (
-        <>
-          <button onClick={pauseTimer}>Pause</button>
-          <button onClick={stopTimer}>Stop</button>
-        </>
-      )}
+      <h2>{mode === 'work' ? 'Work Timer' : 'Break Timer'}</h2>
+      <h1>{`${Math.floor(secondsLeft / 60)
+        .toString()
+        .padStart(2, '0')}:${(secondsLeft % 60).toString().padStart(2, '0')}`}</h1>
+      <button onClick={() => setIsRunning(true)} disabled={isRunning}>Start</button>
+      <button onClick={() => setIsRunning(false)} disabled={!isRunning}>Pause</button>
+      <button onClick={resetTimer}>Stop</button>
     </div>
   );
 };

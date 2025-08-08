@@ -13,30 +13,15 @@ docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 
 
 
-#!/bin/bash
-set -e
+# For macOS Intel
+curl -L -o hey.tar.gz https://github.com/rakyll/hey/releases/download/v0.1.4/hey_darwin_amd64.tar.gz
 
-ALB_DNS="smiski-alb-1737510671.us-east-1.elb.amazonaws.com" # <-- change if needed
+# For macOS M1/M2 (ARM)
+# curl -L -o hey.tar.gz https://github.com/rakyll/hey/releases/download/v0.1.4/hey_darwin_arm64.tar.gz
 
-echo "[INFO] Detecting architecture..."
-ARCH=$(uname -m)
-if [ "$ARCH" = "arm64" ]; then
-  URL="https://github.com/rakyll/hey/releases/download/v0.1.4/hey_darwin_arm64.tar.gz"
-else
-  URL="https://github.com/rakyll/hey/releases/download/v0.1.4/hey_darwin_amd64.tar.gz"
-fi
-echo "[INFO] Architecture: $ARCH"
-echo "[INFO] Downloading hey from $URL..."
-
-curl -L -o hey.tar.gz "$URL"
 tar -xzf hey.tar.gz
 chmod +x hey
-sudo mv hey /usr/local/bin/hey
-rm hey.tar.gz
+sudo mv hey /usr/local/bin/
 
-echo "[INFO] hey version: $(hey --version)"
-echo "[INFO] Running load test against $ALB_DNS for 5 minutes at 50 concurrency..."
-hey -z 5m -c 50 "http://$ALB_DNS/"
-echo "[INFO] Load test finished. Check ECS tasks and CloudWatch metrics to confirm scaling."
 
 

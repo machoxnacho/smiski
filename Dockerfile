@@ -15,8 +15,6 @@ COPY --from=builder /app/frontend/build ./backend/frontend
 WORKDIR /app/backend
 RUN npm install
 
-# ✅ Listen on port 80 instead of 5000
 EXPOSE 80
 
 CMD ["node", "server.js"]
-

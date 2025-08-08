@@ -13,34 +13,14 @@ docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 
 
 
-TargetTracking-service/my-cluster/smiski-backend-task-service-8hxkg3tw-AlarmHigh-6f442b03-bfce-4b99-bd83-5f6d4c965b3f
+TargetTracking-service/my-cluster/smiski-backend-task-service-8hxkg3tw-AlarmHigh-1bc11446-c043-4395-a2df-e6cb07420dde
 OK
-2025-08-08 00:00:01
+2025-08-08 00:21:57
 CPUUtilization > 50 for 3 datapoints within 3 minutes
 Actions enabled
-TargetTracking-service/my-cluster/smiski-backend-task-service-8hxkg3tw-AlarmLow-cbcb5c0a-41ce-4f5e-83a4-08b894b15a1b
+TargetTracking-service/my-cluster/smiski-backend-task-service-8hxkg3tw-AlarmLow-892941e4-7a80-47fb-9570-c9cc16f397bb
 In alarm
-2025-08-07 23:59:47
-CPUUtilization < 45 for 15 datapoints within 15 minutes
-Actions enabled
-TargetTracking-Infra-ECS-Cluster-my-cluster-2899bb76-ECSAutoScalingGroup-iPiluVflti87-AlarmLow-cf7ea85a-1ed6-4971-b3cb-f94c60f35d13
-In alarm
-2025-08-07 19:37:59
-CapacityProviderReservation < 100 for 15 datapoints within 15 minutes
-Actions enabled
-TargetTracking-Infra-ECS-Cluster-my-cluster-2899bb76-ECSAutoScalingGroup-iPiluVflti87-AlarmHigh-58959b1c-a6c2-4558-9bce-6215abfc73bf
-OK
-2025-08-07 14:05:09
-CapacityProviderReservation > 100 for 1 datapoints within 1 minute
-Actions enabled
-TargetTracking-Infra-ECS-Cluster-smiski-cluster-d281fca6-ECSAutoScalingGroup-6apgl9MnnqxV-AlarmLow-2987a8f6-8b9c-4041-b8d9-3ceefd3ead02
-OK
-2025-08-07 07:14:32
-CapacityProviderReservation < 100 for 15 datapoints within 15 minutes
-Actions enabled
-TargetTracking-Infra-ECS-Cluster-smiski-cluster-d281fca6-ECSAutoScalingGroup-6apgl9MnnqxV-AlarmHigh-2013e894-6295-4f3b-ae73-3398c8b0d0ef
-OK
-2025-08-05 15:03:19
-CapacityProviderReservation > 100 for 1 datapoints within 1 minute
+2025-08-08 00:20:54
+CPUUtilization < 50 for 3 datapoints within 3 minutes
 Actions enabled
 

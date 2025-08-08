@@ -13,86 +13,34 @@ docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 
 
 
-import React, { useEffect, useState, useRef } from 'react';
-
-interface TimerProps {
-  onCoinsEarned: () => void;
-  userId: string;
-}
-
-const Timer: React.FC<TimerProps> = () => {
-  const [secondsLeft, setSecondsLeft] = useState(25); // 25s work
-  const [isRunning, setIsRunning] = useState(false);
-  const [mode, setMode] = useState<'work' | 'break'>('work');
-
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const resetTimer = () => {
-    setSecondsLeft(mode === 'work' ? 25 : 5);
-    setIsRunning(false);
-  };
-
-  const switchMode = () => {
-    const newMode = mode === 'work' ? 'break' : 'work';
-    setMode(newMode);
-    setSecondsLeft(newMode === 'work' ? 25 : 5);
-    setIsRunning(false);
-  };
-
-  useEffect(() => {
-    if (isRunning && secondsLeft > 0) {
-      timerRef.current = setTimeout(() => {
-        setSecondsLeft((prev) => prev - 1);
-      }, 1000);
-    } else if (isRunning && secondsLeft === 0) {
-      switchMode(); // Auto-switch between work and break
-    }
-
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, [isRunning, secondsLeft]);
-
-  return (
-    <div>
-      <h2>{mode === 'work' ? 'Work Timer' : 'Break Timer'}</h2>
-      <h1>{`${Math.floor(secondsLeft / 60)
-        .toString()
-        .padStart(2, '0')}:${(secondsLeft % 60).toString().padStart(2, '0')}`}</h1>
-      <button onClick={() => setIsRunning(true)} disabled={isRunning}>Start</button>
-      <button onClick={() => setIsRunning(false)} disabled={!isRunning}>Pause</button>
-      <button onClick={resetTimer}>Stop</button>
-    </div>
-  );
-};
-
-
-
-
-
-
-
-import React, { useState } from 'react';
-import Timer from './Timer';
-import Menu from './Menu';
-
-const App: React.FC = () => {
-  // const [coins, setCoins] = useState<number>(0); // ⛔️ Remove or comment out
-  const [userId] = useState<string>('dummy-user'); // still needed for Timer props
-
-  return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Smiski Pomodoro</h1>
-      {/* <p><strong>Total Coins:</strong> {coins}</p> */}
-      <Timer onCoinsEarned={() => {}} userId={userId} />
-      <Menu />
-    </div>
-  );
-};
-
-export default App;
-
-
-export default Timer;
-
+TargetTracking-service/my-cluster/smiski-backend-task-service-8hxkg3tw-AlarmHigh-6f442b03-bfce-4b99-bd83-5f6d4c965b3f
+OK
+2025-08-08 00:00:01
+CPUUtilization > 50 for 3 datapoints within 3 minutes
+Actions enabled
+TargetTracking-service/my-cluster/smiski-backend-task-service-8hxkg3tw-AlarmLow-cbcb5c0a-41ce-4f5e-83a4-08b894b15a1b
+In alarm
+2025-08-07 23:59:47
+CPUUtilization < 45 for 15 datapoints within 15 minutes
+Actions enabled
+TargetTracking-Infra-ECS-Cluster-my-cluster-2899bb76-ECSAutoScalingGroup-iPiluVflti87-AlarmLow-cf7ea85a-1ed6-4971-b3cb-f94c60f35d13
+In alarm
+2025-08-07 19:37:59
+CapacityProviderReservation < 100 for 15 datapoints within 15 minutes
+Actions enabled
+TargetTracking-Infra-ECS-Cluster-my-cluster-2899bb76-ECSAutoScalingGroup-iPiluVflti87-AlarmHigh-58959b1c-a6c2-4558-9bce-6215abfc73bf
+OK
+2025-08-07 14:05:09
+CapacityProviderReservation > 100 for 1 datapoints within 1 minute
+Actions enabled
+TargetTracking-Infra-ECS-Cluster-smiski-cluster-d281fca6-ECSAutoScalingGroup-6apgl9MnnqxV-AlarmLow-2987a8f6-8b9c-4041-b8d9-3ceefd3ead02
+OK
+2025-08-07 07:14:32
+CapacityProviderReservation < 100 for 15 datapoints within 15 minutes
+Actions enabled
+TargetTracking-Infra-ECS-Cluster-smiski-cluster-d281fca6-ECSAutoScalingGroup-6apgl9MnnqxV-AlarmHigh-2013e894-6295-4f3b-ae73-3398c8b0d0ef
+OK
+2025-08-05 15:03:19
+CapacityProviderReservation > 100 for 1 datapoints within 1 minute
+Actions enabled
 

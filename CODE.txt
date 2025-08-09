@@ -1,18 +1,20 @@
-import React from 'react';
-
-const Menu: React.FC = () => {
-  return (
-    <div className="menu">
-      <div style={{ opacity: 0.9 }}>
-        <strong>Menu (soon)</strong>
-      </div>
-      <ul style={{ marginTop: 8, paddingLeft: 18 }}>
-        <li>Item A — 50 coins</li>
-        <li>Item B — 75 coins</li>
-        <li>Item C — 100 coins</li>
-      </ul>
-    </div>
-  );
-};
-
-export default Menu;
+declare module '*.png' {
+  const src: string;
+  export default src;
+}
+declare module '*.jpg' {
+  const src: string;
+  export default src;
+}
+declare module '*.jpeg' {
+  const src: string;
+  export default src;
+}
+declare module '*.gif' {
+  const src: string;
+  export default src;
+}
+declare module '*.svg' {
+  const src: string;
+  export default src;
+}

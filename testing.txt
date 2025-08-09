@@ -31,35 +31,29 @@ smiski/
 ├── Dockerfile
 └── .dockerignore
 
+--------------------------------------------------------------------------------------------------------------------
 
 
-npm start
+import React from 'react';
 
-> smiski-frontend@1.0.0 start
-> react-scripts start
-
-node:internal/modules/cjs/loader:1404
-  throw err;
-  ^
-
-Error: Cannot find module '../scripts/start'
-Require stack:
-- /Users/bntran/Documents/Capstone/pomodoro/iksims/frontend/node_modules/.bin/react-scripts
-    at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
-    at Function.resolve (node:internal/modules/helpers:145:19)
-    at Object.<anonymous> (/Users/bntran/Documents/Capstone/pomodoro/iksims/frontend/node_modules/.bin/react-scripts:31:23)
-    at Module._compile (node:internal/modules/cjs/loader:1730:14)
-    at Object..js (node:internal/modules/cjs/loader:1895:10)
-    at Module.load (node:internal/modules/cjs/loader:1465:32)
-    at Function._load (node:internal/modules/cjs/loader:1282:12)
-    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
-    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
-    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5) {
-  code: 'MODULE_NOT_FOUND',
-  requireStack: [
-    '/Users/bntran/Documents/Capstone/pomodoro/iksims/frontend/node_modules/.bin/react-scripts'
-  ]
+interface MenuProps {
+  onStart: () => void;
+  onReset: () => void;
+  isActive: boolean;
 }
+
+const Menu: React.FC<MenuProps> = ({ onStart, onReset, isActive }) => {
+  return (
+    <div className="controls">
+      <button onClick={onStart}>
+        {isActive ? 'Pause' : 'Start'}
+      </button>
+      <button onClick={onReset}>Reset</button>
+    </div>
+  );
+};
+
+export default Menu;
 
 Node.js v22.17.1
 

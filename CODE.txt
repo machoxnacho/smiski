@@ -1,4 +1,43 @@
-<div className="shop-imgwrap">
-  <img src={it.img} alt={it.name} className="shop-img" />
-</div>
-<div className="shop-name">20 coins</div>
+import React from 'react';
+
+// Import only the two images you want in the collection
+import smiski2 from './images/smiski2.png';
+import smiski3 from './images/smiski3.png';
+
+type Props = {
+  open: boolean;
+  onClose: () => void;
+};
+
+const ITEMS = [
+  { id: 2, name: 'Smiski 2', img: smiski2 },
+  { id: 3, name: 'Smiski 3', img: smiski3 },
+];
+
+const SmiskiCollectionModal: React.FC<Props> = ({ open, onClose }) => {
+  if (!open) return null;
+
+  return (
+    <div className="overlay" role="dialog" aria-modal="true" onClick={onClose}>
+      <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+        <h2 className="modal-title">My Smiski Collection</h2>
+
+        <div className="shop-grid">
+          {ITEMS.map((it) => (
+            <div key={it.id} className="shop-item">
+              <div className="shop-imgwrap">
+                <img src={it.img} alt={it.name} className="shop-img" />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="modal-actions">
+          <button className="primary" onClick={onClose}>Close</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SmiskiCollectionModal;

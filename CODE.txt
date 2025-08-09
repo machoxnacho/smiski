@@ -1,49 +1,20 @@
-import React from 'react';
+// add this import
+import SmiskiModal from './SmiskiModal';
 
-// Put your smiski images in frontend/src/images and import them here:
-import smiski1 from './images/smiski1.png';
-import smiski2 from './images/smiski2.png';
-import smiski3 from './images/smiski3.png';
-import smiski4 from './images/smiski4.png';
+// ...inside the component:
+const [shopOpen, setShopOpen] = useState(false);
 
-type Props = {
-  open: boolean;
-  onClose: () => void;
-};
+// replace the coin area with a button that opens the modal:
+<button
+  className="coin-btn"
+  type="button"
+  onClick={() => setShopOpen(true)}
+  aria-label="Coin button"
+  title="Coins"
+>
+  <img className="imgicon" src={coinImg} alt="Coins" />
+  <span>0</span>
+</button>
 
-const ITEMS = [
-  { id: 1, name: 'Smiski A', img: smiski1 },
-  { id: 2, name: 'Smiski B', img: smiski2 },
-  { id: 3, name: 'Smiski C', img: smiski3 },
-  { id: 4, name: 'Smiski D', img: smiski4 },
-];
-
-const SmiskiModal: React.FC<Props> = ({ open, onClose }) => {
-  if (!open) return null;
-
-  return (
-    <div className="overlay" role="dialog" aria-modal="true" onClick={onClose}>
-      <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-        <h2 className="modal-title">Purchase Smiskis</h2>
-
-        <div className="shop-grid">
-          {ITEMS.map((it) => (
-            <div key={it.id} className="shop-item">
-              <div className="shop-imgwrap">
-                <img src={it.img} alt={it.name} className="shop-img" />
-                <div className="price-pill">20 coins</div>
-              </div>
-              <div className="shop-name">{it.name}</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="modal-actions">
-          <button className="primary" onClick={onClose}>Close</button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default SmiskiModal;
+// ...at the bottom of the return (after the timer card), render the modal:
+<SmiskiModal open={shopOpen} onClose={() => setShopOpen(false)} />

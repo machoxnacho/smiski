@@ -1,16 +1,4 @@
-import SmiskiCollectionModal from './SmiskiCollectionModal';
-
-const [collectionOpen, setCollectionOpen] = useState(false);
-
-<button
-  className="menu-btn"
-  type="button"
-  onClick={() => setCollectionOpen(true)}
-  aria-label="Menu button"
-  title="My Collection"
->
-  <img className="imgicon" src={menuImg} alt="" />
-</button>
-
-<SmiskiCollectionModal open={collectionOpen} onClose={() => setCollectionOpen(false)} />
-
+declare module '*.mp3' {
+  const src: string;
+  export default src;
+}

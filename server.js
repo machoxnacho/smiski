@@ -41,36 +41,3 @@ app.get('/api/coins', async (req, res) => {
     res.status(500).json({ error: 'Error fetching coins' });
   }
 });
-
-app.post('/api/add-coins', async (req, res) => {
-  const userId = req.headers['x-user-id'] || 'test-user-123';
-  const coinsToAdd = req.body.coins || 0;
-
-  const params = {
-    TableName: TABLE_NAME,
-    Key: { userId },
-    UpdateExpression: 'SET coins = if_not_exists(coins, :zero) + :coins',
-    ExpressionAttributeValues: {
-      ':coins': coinsToAdd,
-      ':zero': 0,
-    },
-    ReturnValues: 'UPDATED_NEW',
-  };
-
-  try {
-    const result = await dynamodb.update(params).promise();
-    res.json({ coins: result.Attributes.coins });
-  } catch (error) {
-    console.error('DynamoDB PUT error:', error);
-    res.status(500).json({ error: 'Error updating coins' });
-  }
-});
-
-// ✅ Fallback route for React frontend
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
-});
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});

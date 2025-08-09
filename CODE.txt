@@ -1,11 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './App.css'; // ⬅️ use App.css
+import React, { useState } from 'react';
+import Timer from './Timer';
+import Menu from './Menu';
 
-const root = ReactDOM.createRoot(document.getElementById('root')!);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const App: React.FC = () => {
+  const [userId] = useState<string>('dummy-user');
+
+  return (
+    <div className="app">
+      <header className="header">
+        <div className="title">Sugar & Focus</div>
+      </header>
+
+      <p className="sub">Start a study timer and bake some sweets (≧◡≦)</p>
+
+      <Timer onCoinsEarned={() => {}} userId={userId} />
+      <Menu />
+    </div>
+  );
+};
+
+export default App;
+

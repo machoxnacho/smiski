@@ -1,15 +1,49 @@
-.coin-btn {
-  border: none;
-  background: transparent;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 22px;
-  color: var(--brown);
-  cursor: pointer;
-}
+import React from 'react';
 
-.coin-btn img {
-  display: block;
-}
+// Put your smiski images in frontend/src/images and import them here:
+import smiski1 from './images/smiski1.png';
+import smiski2 from './images/smiski2.png';
+import smiski3 from './images/smiski3.png';
+import smiski4 from './images/smiski4.png';
+
+type Props = {
+  open: boolean;
+  onClose: () => void;
+};
+
+const ITEMS = [
+  { id: 1, name: 'Smiski A', img: smiski1 },
+  { id: 2, name: 'Smiski B', img: smiski2 },
+  { id: 3, name: 'Smiski C', img: smiski3 },
+  { id: 4, name: 'Smiski D', img: smiski4 },
+];
+
+const SmiskiModal: React.FC<Props> = ({ open, onClose }) => {
+  if (!open) return null;
+
+  return (
+    <div className="overlay" role="dialog" aria-modal="true" onClick={onClose}>
+      <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+        <h2 className="modal-title">Purchase Smiskis</h2>
+
+        <div className="shop-grid">
+          {ITEMS.map((it) => (
+            <div key={it.id} className="shop-item">
+              <div className="shop-imgwrap">
+                <img src={it.img} alt={it.name} className="shop-img" />
+                <div className="price-pill">20 coins</div>
+              </div>
+              <div className="shop-name">{it.name}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="modal-actions">
+          <button className="primary" onClick={onClose}>Close</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SmiskiModal;

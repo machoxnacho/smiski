@@ -1,20 +1,83 @@
-// add this import
-import SmiskiModal from './SmiskiModal';
+/* ===== Modal / Overlay ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+}
 
-// ...inside the component:
-const [shopOpen, setShopOpen] = useState(false);
+.modal-card {
+  width: 620px;
+  max-width: calc(100vw - 40px);
+  background: var(--cream);
+  color: var(--brown);
+  border: 4px solid var(--brown);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 12px 0 var(--brown-dark), 0 20px 40px var(--shadow);
+}
 
-// replace the coin area with a button that opens the modal:
-<button
-  className="coin-btn"
-  type="button"
-  onClick={() => setShopOpen(true)}
-  aria-label="Coin button"
-  title="Coins"
->
-  <img className="imgicon" src={coinImg} alt="Coins" />
-  <span>0</span>
-</button>
+.modal-title {
+  margin: 0 0 12px 0;
+  font-size: 44px;
+  color: var(--text);      /* minty heading like your theme */
+}
 
-// ...at the bottom of the return (after the timer card), render the modal:
-<SmiskiModal open={shopOpen} onClose={() => setShopOpen(false)} />
+/* Shop grid */
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.shop-item {
+  background: #efe4c9;
+  border: 3px solid var(--brown);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.shop-imgwrap {
+  position: relative;
+  background: #f8efdb;
+  border: 2px solid var(--brown);
+  border-radius: 10px;
+  padding: 10px;
+  display: grid;
+  place-items: center;
+}
+
+.shop-img {
+  max-width: 120px;
+  max-height: 120px;
+  image-rendering: pixelated;
+}
+
+/* the "20 coins" label inside the box */
+.price-pill {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  font-size: 18px;
+  padding: 4px 8px;
+  border: 2px solid var(--brown);
+  background: #e8d6b7;
+  border-radius: 8px;
+  color: var(--brown);
+}
+
+.shop-name {
+  margin-top: 8px;
+  font-size: 22px;
+  color: var(--brown);
+}
+
+/* footer actions */
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}

@@ -34,27 +34,51 @@ smiski/
 --------------------------------------------------------------------------------------------------------------------
 
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-interface MenuProps {
-  onStart: () => void;
-  onReset: () => void;
-  isActive: boolean;
-}
+const Timer: React.FC = () => {
+  const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes
+  const [isActive, setIsActive] = useState(false);
 
-const Menu: React.FC<MenuProps> = ({ onStart, onReset, isActive }) => {
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+
+    if (isActive && timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 1000);
+    } else if (timeLeft === 0) {
+      clearInterval(interval!);
+      alert('Pomodoro session ended!');
+    } else {
+      clearInterval(interval!);
+    }
+
+    return () => clearInterval(interval!);
+  }, [isActive, timeLeft]);
+
+  const toggleTimer = () => setIsActive(!isActive);
+  const resetTimer = () => {
+    setIsActive(false);
+    setTimeLeft(25 * 60); // reset to 25 minutes
+  };
+
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+
   return (
-    <div className="controls">
-      <button onClick={onStart}>
-        {isActive ? 'Pause' : 'Start'}
-      </button>
-      <button onClick={onReset}>Reset</button>
+    <div className="timer-container">
+      <h1>Pomodoro Timer</h1>
+      <div className="timer">
+        <span>{minutes < 10 ? `0${minutes}` : minutes}:</span>
+        <span>{seconds < 10 ? `0${seconds}` : seconds}</span>
+      </div>
+      <Menu onStart={toggleTimer} onReset={resetTimer} isActive={isActive} />
     </div>
   );
 };
 
-export default Menu;
+export default Timer;
 
-Node.js v22.17.1
 
 

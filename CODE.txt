@@ -1,313 +1,177 @@
-import React, { useEffect, useRef, useState } from 'react';
-import SmiskiModal from './SmiskiModal';
-import SmiskiCollectionModal from './SmiskiCollectionModal';
-import alarmSound from './images/alarm.mp3';
+const express = require('express');
+const AWS = require('aws-sdk');
+const cors = require('cors');
+const path = require('path');
+require('dotenv').config();
 
-// Your images in /frontend/src/images
-import coinImg from './images/coinImg.png';
-import menuImg from './images/menuImg.png';
-import bgImg   from './images/bgImg.png';
+const app = express();
+const port = process.env.PORT || 80;
 
-interface TimerProps {
-  onCoinsEarned: () => void;
-  userId: string;
-}
+// ===== DynamoDB Setup =====
+AWS.config.update({ region: process.env.AWS_REGION || 'us-east-1' });
+const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-// Seconds (as requested)
-const WORK = 25;
-const BREAK = 5;
+// Use env var if provided; default to the plural you mentioned previously
+const TABLE_NAME = process.env.POMODORO_TABLE || 'PomodoroUsers';
 
-function fmt(sec: number) {
-  const m = Math.floor(sec / 60).toString().padStart(2, '0');
-  const s = (sec % 60).toString().padStart(2, '0');
-  return `${m}:${s}`;
-}
+app.use(cors());
+app.use(express.json());
 
-const Timer: React.FC<TimerProps> = () => {
-  const [mode, setMode] = useState<'work' | 'break'>('work');
-  const [secondsLeft, setSecondsLeft] = useState(WORK);
-  const [isRunning, setIsRunning] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+// ===== Health check =====
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
 
-  const [shopOpen, setShopOpen] = useState(false);
-  const [collectionOpen, setCollectionOpen] = useState(false);
+// ===== Serve frontend (adjust this path to your built frontend if needed) =====
+app.use(express.static(path.join(__dirname, 'frontend')));
 
+/**
+ * GET /api/user?userId=...
+ * - Upsert if not exists (coins=0, cycleCount=0) and return current totals
+ */
+app.get('/api/user', async (req, res) => {
+  const userId = String(req.query.userId || '').trim();
 
-  // Start/Pause toggle
-  const handleStart = () => setIsRunning(true);
-  const handlePause = () => setIsRunning(false);
+  if (!userId) {
+    return res.status(400).json({ error: 'userId query param is required' });
+  }
 
-  // Stop resets current mode to its full duration
-  const handleStop = () => {
-    setIsRunning(false);
-    setSecondsLeft(mode === 'work' ? WORK : BREAK);
-  };
+  try {
+    // Try to get
+    const getParams = {
+      TableName: TABLE_NAME,
+      Key: { userId }
+    };
+    const result = await dynamodb.get(getParams).promise();
 
-  // Internal: switch modes and show Start (not running)
-  const goToBreak = () => {
-    setMode('break');
-    setSecondsLeft(BREAK);
-    setIsRunning(false); // show Start
-  };
-  const goToWork = () => {
-    setMode('work');
-    setSecondsLeft(WORK);
-    setIsRunning(false); // show Start
-  };
-
-  // Tick
-  useEffect(() => {
-    if (!isRunning || secondsLeft <= 0) return;
-
-    timerRef.current = setTimeout(() => {
-      setSecondsLeft((prev) => prev - 1);
-    }, 1000);
-
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [isRunning, secondsLeft]);
-
-  // Handle reaching 00:00
-  useEffect(() => {
-    if (secondsLeft !== 0) return;
-
-    // Completed a phase
-    if (mode === 'work') {
-      // optional: onCoinsEarned();
-      goToBreak(); // auto-switch to break (5s) and show Start
-    } else {
-      goToWork();  // auto-switch back to work (25s) and show Start
+    if (result.Item) {
+      return res.json({
+        userId,
+        coins: result.Item.coins ?? 0,
+        cycleCount: result.Item.cycleCount ?? 0
+      });
     }
-  }, [secondsLeft]); // eslint-disable-line
 
-  return (
-    <div className="timer-card">
-      <div className="card-top">
-        {/* top-left: coin button */}
-        <button
-          className="coin-btn"
-          type="button"
-          onClick={() => setShopOpen(true)}
-          aria-label="Coin button"
-          title="Coins"
-        >
-          <img className="imgicon" src={coinImg} alt="Coins" />
-          <span>0</span>
-        </button>
+    // If not found, create it
+    const now = new Date().toISOString();
+    const putParams = {
+      TableName: TABLE_NAME,
+      Item: {
+        userId,
+        coins: 0,
+        cycleCount: 0,
+        createdAt: now,
+        updatedAt: now
+      },
+      ConditionExpression: 'attribute_not_exists(userId)'
+    };
 
-        {/* top-right: menu button */}
-        <button
-          className="menu-btn"
-          type="button"
-          onClick={() => setCollectionOpen(true)}
-          aria-label="Menu button"
-          title="My Collection"
-        >
-          <img className="imgicon" src={menuImg} alt="" />
-        </button>
-      </div>
-
-      {/* art behind timer */}
-      <div className="time-wrap">
-        <img className="time-bg" src={bgImg} alt="" />
-        <div className="time">{fmt(secondsLeft)}</div>
-      </div>
-
-      <div className="controls">
-        {/* When NOT running, show single Start button */}
-        {!isRunning ? (
-          <button className="primary" onClick={handleStart}>
-            Start
-          </button>
-        ) : (
-          <>
-            {/* When running, show Pause + Stop */}
-            <div className="row">
-              <button className="ghost" onClick={handlePause}>Pause</button>
-              <button className="ghost" onClick={handleStop}>Stop</button>
-            </div>
-          </>
-        )}
-      </div>
-      <SmiskiModal open={shopOpen} onClose={() => setShopOpen(false)} />
-      <SmiskiCollectionModal open={collectionOpen} onClose={() => setCollectionOpen(false)} />
-    </div>
-  );
-};
-
-export default Timer;
-
-------------------------------------------------------------------------------------------------------------
-import React, { useEffect, useRef, useState } from 'react';
-import SmiskiModal from './SmiskiModal';
-import SmiskiCollectionModal from './SmiskiCollectionModal';
-import alarmSound from './images/alarm.mp3';
-
-// Your images in /frontend/src/images
-import coinImg from './images/coinImg.png';
-import menuImg from './images/menuImg.png';
-import bgImg   from './images/bgImg.png';
-
-interface TimerProps {
-  onCoinsEarned: () => void;
-  userId: string;
-}
-
-// Seconds (as requested)
-const WORK = 25;
-const BREAK = 5;
-
-function fmt(sec: number) {
-  const m = Math.floor(sec / 60).toString().padStart(2, '0');
-  const s = (sec % 60).toString().padStart(2, '0');
-  return `${m}:${s}`;
-}
-
-const Timer: React.FC<TimerProps> = () => {
-  const [mode, setMode] = useState<'work' | 'break'>('work');
-  const [secondsLeft, setSecondsLeft] = useState(WORK);
-  const [isRunning, setIsRunning] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const [shopOpen, setShopOpen] = useState(false);
-  const [collectionOpen, setCollectionOpen] = useState(false);
-
-  // 🔊 Audio: create and keep one Audio element
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  useEffect(() => {
-    audioRef.current = new Audio(alarmSound);
-    audioRef.current.preload = 'auto';
-    audioRef.current.volume = 0.8; // tweak if needed
-  }, []);
-
-  const playAlarm = () => {
-    const el = audioRef.current;
-    if (!el) return;
     try {
-      el.currentTime = 0;
-      void el.play();
-    } catch {
-      // ignore (autoplay policies, etc.)
+      await dynamodb.put(putParams).promise();
+    } catch (e) {
+      // If a race creates it first, just continue
     }
-  };
 
-  // Start/Pause toggle
-  const handleStart = () => {
-    // Prime audio on first user gesture so browsers allow playback later
-    if (audioRef.current) {
-      try {
-        void audioRef.current.play().then(() => {
-          audioRef.current?.pause();
-          if (audioRef.current) audioRef.current.currentTime = 0;
-        });
-      } catch {
-        // ignore
-      }
-    }
-    setIsRunning(true);
-  };
+    return res.json({ userId, coins: 0, cycleCount: 0 });
+  } catch (error) {
+    console.error('DynamoDB GET/PUT error:', error);
+    return res.status(500).json({ error: 'Error fetching or creating user' });
+  }
+});
 
-  const handlePause = () => setIsRunning(false);
+/**
+ * POST /api/earn
+ * Body: { userId: string, amount?: number }
+ * - Atomically increments coins by `amount` (default 5) and cycleCount by 1
+ */
+app.post('/api/earn', async (req, res) => {
+  const userId = String(req.body?.userId || '').trim();
+  const amount = Number(req.body?.amount ?? 5);
 
-  // Stop resets current mode to its full duration
-  const handleStop = () => {
-    setIsRunning(false);
-    setSecondsLeft(mode === 'work' ? WORK : BREAK);
-  };
+  if (!userId) {
+    return res.status(400).json({ error: 'userId is required in request body' });
+  }
+  if (!Number.isFinite(amount) || amount <= 0) {
+    return res.status(400).json({ error: 'amount must be a positive number' });
+  }
 
-  // Internal: switch modes and show Start (not running)
-  const goToBreak = () => {
-    setMode('break');
-    setSecondsLeft(BREAK);
-    setIsRunning(false); // show Start
-  };
-  const goToWork = () => {
-    setMode('work');
-    setSecondsLeft(WORK);
-    setIsRunning(false); // show Start
-  };
+  try {
+    const now = new Date().toISOString();
 
-  // Tick
-  useEffect(() => {
-    if (!isRunning || secondsLeft <= 0) return;
+    const updateParams = {
+      TableName: TABLE_NAME,
+      Key: { userId },
+      UpdateExpression: `
+        SET coins = if_not_exists(coins, :zero) + :amt,
+            cycleCount = if_not_exists(cycleCount, :zero) + :one,
+            updatedAt = :now,
+            createdAt = if_not_exists(createdAt, :now)
+      `,
+      ExpressionAttributeValues: {
+        ':zero': 0,
+        ':amt': amount,
+        ':one': 1,
+        ':now': now
+      },
+      ReturnValues: 'ALL_NEW'
+    };
 
-    timerRef.current = setTimeout(() => {
-      setSecondsLeft((prev) => prev - 1);
-    }, 1000);
+    const out = await dynamodb.update(updateParams).promise();
+    return res.json({
+      userId,
+      coins: out.Attributes?.coins ?? 0,
+      cycleCount: out.Attributes?.cycleCount ?? 0
+    });
+  } catch (error) {
+    console.error('DynamoDB UPDATE error:', error);
+    return res.status(500).json({ error: 'Error updating user totals' });
+  }
+});
 
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [isRunning, secondsLeft]);
+// ===== (Optional) Keep your old endpoints working for now =====
+// GET /api/coins -> returns only coin total (backward compat)
+app.get('/api/coins', async (req, res) => {
+  const userId = String(req.query.userId || 'test-user-123');
+  try {
+    const result = await dynamodb.get({ TableName: TABLE_NAME, Key: { userId } }).promise();
+    const coins = result.Item ? (result.Item.coins ?? 0) : 0;
+    res.json({ coins });
+  } catch (error) {
+    console.error('DynamoDB GET error (coins):', error);
+    res.status(500).json({ error: 'Error fetching coins' });
+  }
+});
 
-  // Handle reaching 00:00
-  useEffect(() => {
-    if (secondsLeft !== 0) return;
+// POST /api/add-coins -> increments coins only (backward compat)
+app.post('/api/add-coins', async (req, res) => {
+  const userId = String(req.headers['x-user-id'] || 'test-user-123');
+  const coinsToAdd = Number(req.body.coins || 0);
 
-    // Play sound on both work and break completion
-    playAlarm();
+  if (!Number.isFinite(coinsToAdd) || coinsToAdd <= 0) {
+    return res.status(400).json({ error: 'coins must be a positive number' });
+  }
 
-    if (mode === 'work') {
-      // optional: onCoinsEarned();
-      goToBreak(); // auto-switch to break (5s) and show Start
-    } else {
-      goToWork();  // auto-switch back to work (25s) and show Start
-    }
-  }, [secondsLeft]); // eslint-disable-line
+  try {
+    const result = await dynamodb.update({
+      TableName: TABLE_NAME,
+      Key: { userId },
+      UpdateExpression: 'SET coins = if_not_exists(coins, :zero) + :coins',
+      ExpressionAttributeValues: { ':coins': coinsToAdd, ':zero': 0 },
+      ReturnValues: 'UPDATED_NEW'
+    }).promise();
 
-  return (
-    <div className="timer-card">
-      <div className="card-top">
-        {/* top-left: coin button */}
-        <button
-          className="coin-btn"
-          type="button"
-          onClick={() => setShopOpen(true)}
-          aria-label="Coin button"
-          title="Coins"
-        >
-          <img className="imgicon" src={coinImg} alt="Coins" />
-          <span>0</span>
-        </button>
+    res.json({ coins: result.Attributes.coins });
+  } catch (error) {
+    console.error('DynamoDB UPDATE error (add-coins):', error);
+    res.status(500).json({ error: 'Error updating coins' });
+  }
+});
 
-        {/* top-right: menu button */}
-        <button
-          className="menu-btn"
-          type="button"
-          onClick={() => setCollectionOpen(true)}
-          aria-label="Menu button"
-          title="My Collection"
-        >
-          <img className="imgicon" src={menuImg} alt="" />
-        </button>
-      </div>
+// ===== Fallback route for SPA =====
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+});
 
-      {/* art behind timer */}
-      <div className="time-wrap">
-        <img className="time-bg" src={bgImg} alt="" />
-        <div className="time">{fmt(secondsLeft)}</div>
-      </div>
-
-      <div className="controls">
-        {/* When NOT running, show single Start button */}
-        {!isRunning ? (
-          <button className="primary" onClick={handleStart}>
-            Start
-          </button>
-        ) : (
-          <>
-            {/* When running, show Pause + Stop */}
-            <div className="row">
-              <button className="ghost" onClick={handlePause}>Pause</button>
-              <button className="ghost" onClick={handleStop}>Stop</button>
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* Modals */}
-      <SmiskiModal open={shopOpen} onClose={() => setShopOpen(false)} />
-      <SmiskiCollectionModal open={collectionOpen} onClose={() => setCollectionOpen(false)} />
-    </div>
-  );
-};
-
-export default Timer;
-
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});

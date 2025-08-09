@@ -1,122 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
-// Your images in /frontend/src/images
-import coinImg from './images/coin.png';
-import menuImg from './images/menu.png';
-import bgImg   from './images/cat-bg.png';
-
-interface TimerProps {
-  onCoinsEarned: () => void;
-  userId: string;
-}
-
-// Seconds (as requested)
-const WORK = 25;
-const BREAK = 5;
-
-function fmt(sec: number) {
-  const m = Math.floor(sec / 60).toString().padStart(2, '0');
-  const s = (sec % 60).toString().padStart(2, '0');
-  return `${m}:${s}`;
-}
-
-const Timer: React.FC<TimerProps> = () => {
-  const [mode, setMode] = useState<'work' | 'break'>('work');
-  const [secondsLeft, setSecondsLeft] = useState(WORK);
-  const [isRunning, setIsRunning] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Start/Pause toggle
-  const handleStart = () => setIsRunning(true);
-  const handlePause = () => setIsRunning(false);
-
-  // Stop resets current mode to its full duration
-  const handleStop = () => {
-    setIsRunning(false);
-    setSecondsLeft(mode === 'work' ? WORK : BREAK);
-  };
-
-  // Internal: switch modes and show Start (not running)
-  const goToBreak = () => {
-    setMode('break');
-    setSecondsLeft(BREAK);
-    setIsRunning(false); // show Start
-  };
-  const goToWork = () => {
-    setMode('work');
-    setSecondsLeft(WORK);
-    setIsRunning(false); // show Start
-  };
-
-  // Tick
-  useEffect(() => {
-    if (!isRunning || secondsLeft <= 0) return;
-
-    timerRef.current = setTimeout(() => {
-      setSecondsLeft((prev) => prev - 1);
-    }, 1000);
-
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [isRunning, secondsLeft]);
-
-  // Handle reaching 00:00
-  useEffect(() => {
-    if (secondsLeft !== 0) return;
-
-    // Completed a phase
-    if (mode === 'work') {
-      // optional: onCoinsEarned();
-      goToBreak(); // auto-switch to break (5s) and show Start
-    } else {
-      goToWork();  // auto-switch back to work (25s) and show Start
-    }
-  }, [secondsLeft]); // eslint-disable-line
-
+const Menu: React.FC = () => {
   return (
-    <div className="timer-card">
-      <div className="card-top">
-        {/* top-left: coins */}
-        <div className="coin">
-          <img className="imgicon" src={coinImg} alt="Coins" />
-          <span>0</span>
-        </div>
-
-        {/* top-right: menu button */}
-        <button
-          className="menu-btn"
-          type="button"
-          onClick={() => {/* wire later */}}
-          aria-label="Open menu"
-          title="Menu"
-        >
-          <img className="imgicon" src={menuImg} alt="" />
-        </button>
+    <div className="menu">
+      <div style={{ opacity: 0.9 }}>
+        <strong>Menu (soon)</strong>
       </div>
-
-      {/* art behind timer */}
-      <div className="time-wrap">
-        <img className="time-bg" src={bgImg} alt="" />
-        <div className="time">{fmt(secondsLeft)}</div>
-      </div>
-
-      <div className="controls">
-        {/* When NOT running, show single Start button */}
-        {!isRunning ? (
-          <button className="primary" onClick={handleStart}>
-            Start
-          </button>
-        ) : (
-          <>
-            {/* When running, show Pause + Stop */}
-            <div className="row">
-              <button className="ghost" onClick={handlePause}>Pause</button>
-              <button className="ghost" onClick={handleStop}>Stop</button>
-            </div>
-          </>
-        )}
-      </div>
+      <ul style={{ marginTop: 8, paddingLeft: 18 }}>
+        <li>Item A — 50 coins</li>
+        <li>Item B — 75 coins</li>
+        <li>Item C — 100 coins</li>
+      </ul>
     </div>
   );
 };
 
-export default Timer;
+export default Menu;

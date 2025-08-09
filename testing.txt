@@ -34,18 +34,52 @@ smiski/
 --------------------------------------------------------------------------------------------------------------------
 
 
-import React from 'react';
-import Timer from './Timer'; // import Timer component
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-const App: React.FC = () => {
-  return (
-    <div>
-      <Timer /> {/* Render the Timer component */}
-    </div>
-  );
-};
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-export default App;
+.timer-container {
+  text-align: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.timer {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.controls button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.controls button:hover {
+  background-color: #45a049;
+}
 
 
 

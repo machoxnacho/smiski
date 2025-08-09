@@ -34,51 +34,19 @@ smiski/
 --------------------------------------------------------------------------------------------------------------------
 
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import Timer from './Timer'; // import Timer component
 
-const Timer: React.FC = () => {
-  const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-
-    if (isActive && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft((prevTime) => prevTime - 1);
-      }, 1000);
-    } else if (timeLeft === 0) {
-      clearInterval(interval!);
-      alert('Pomodoro session ended!');
-    } else {
-      clearInterval(interval!);
-    }
-
-    return () => clearInterval(interval!);
-  }, [isActive, timeLeft]);
-
-  const toggleTimer = () => setIsActive(!isActive);
-  const resetTimer = () => {
-    setIsActive(false);
-    setTimeLeft(25 * 60); // reset to 25 minutes
-  };
-
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-
+const App: React.FC = () => {
   return (
-    <div className="timer-container">
-      <h1>Pomodoro Timer</h1>
-      <div className="timer">
-        <span>{minutes < 10 ? `0${minutes}` : minutes}:</span>
-        <span>{seconds < 10 ? `0${seconds}` : seconds}</span>
-      </div>
-      <Menu onStart={toggleTimer} onReset={resetTimer} isActive={isActive} />
+    <div>
+      <Timer /> {/* Render the Timer component */}
     </div>
   );
 };
 
-export default Timer;
+export default App;
+
 
 
 

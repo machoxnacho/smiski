@@ -1,10 +1,62 @@
-export function getOrCreateUserId(): string {
-  const key = 'pomodoro_user_id';
-  let id = localStorage.getItem(key);
-  if (!id) {
-    id = crypto.randomUUID();
-    localStorage.setItem(key, id);
-  }
-  return id;
+import React, { useEffect, useState } from 'react';
+import Timer from './Timer';
+import Menu from './Menu';
+import { getOrCreateUserId } from './userId';
+
+interface UserData {
+  coins: number;
+  cycleCount: number;
 }
 
+const App: React.FC = () => {
+  const [userId] = useState<string>(getOrCreateUserId());
+  const [userData, setUserData] = useState<UserData>({ coins: 0, cycleCount: 0 });
+
+  // Fetch from backend on load
+  useEffect(() => {
+    fetch(`/api/user?userId=${userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && typeof data.coins === 'number') {
+          setUserData({ coins: data.coins, cycleCount: data.cycleCount });
+        }
+      })
+      .catch((err) => console.error('Failed to fetch user:', err));
+  }, [userId]);
+
+  // Called when a work session completes
+  const handleEarnCoins = async (amount: number) => {
+    try {
+      const res = await fetch(`/api/earn`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, amount })
+      });
+      const data = await res.json();
+      if (data && typeof data.coins === 'number') {
+        setUserData({ coins: data.coins, cycleCount: data.cycleCount });
+      }
+    } catch (err) {
+      console.error('Error earning coins:', err);
+    }
+  };
+
+  return (
+    <div className="app">
+      <header className="header">
+        <div className="title">Smiski Pomodoro</div>
+      </header>
+
+      <p className="sub">Study, acquire clovers, and grow your smiski collection (˶˃ ᵕ ˂˶)</p>
+
+      <Timer
+        onCoinsEarned={() => handleEarnCoins(5)}
+        userId={userId}
+        coins={userData.coins}
+      />
+      <Menu />
+    </div>
+  );
+};
+
+export default App;

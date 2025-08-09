@@ -11,17 +11,26 @@ docker buildx build --platform linux/arm64 -t smiski-backend:latest --load .
 docker tag smiski-backend:latest 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 docker push 900546069136.dkr.ecr.us-east-1.amazonaws.com/smiski-backend:latest
 
+Folder structure
+smiski/
+├── backend/
+│   ├── server.js
+│   ├── package.json
+│
+├── frontend/
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── App.tsx
+│   │   ├── Timer.tsx
+│   │   ├── Menu.tsx
+│   │   └── index.tsx
+│   ├── package.json
+│   └── tsconfig.json
+│
+├── Dockerfile
+└── .dockerignore
 
-
-# For macOS Intel
-curl -L -o hey.tar.gz https://github.com/rakyll/hey/releases/download/v0.1.4/hey_darwin_amd64.tar.gz
-
-# For macOS M1/M2 (ARM)
-# curl -L -o hey.tar.gz https://github.com/rakyll/hey/releases/download/v0.1.4/hey_darwin_arm64.tar.gz
-
-tar -xzf hey.tar.gz
-chmod +x hey
-sudo mv hey /usr/local/bin/
 
 
 

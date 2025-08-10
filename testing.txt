@@ -34,53 +34,26 @@ smiski/
 --------------------------------------------------------------------------------------------------------------------
 
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+Capstone Project 
 
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+Q1: What is the required format for the Capstone presentation and submission?
+A1: The Capstone Project will consist of two parts:
 
-.timer-container {
-  text-align: center;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+1) Live Presentation: 
+ - Primary Format: Live presentation (in-person or via Chime)
+ - Alternative Option: Recorded presentation (if unable to present live i.e., school is starting early)
+ - Scheduling: Flexible timing - you may schedule directly with your manager/mentor before/by Week 11 if you're ready to present earlier. 
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
+2) Written Document: 
+- Length: Minimum 2 pages, maximum 6 pages
+ - Format: Flexible documentation types, including but not limited to: PRFAQ, User Manual, or Other appropriate documentation formats
+[+] https://w.amazon.com/bin/view/WritingHub/Writing_Handbook/
 
-.timer {
-  font-size: 3rem;
-  margin-bottom: 20px;
-}
+Q2: When will I be presenting the Capstone Project?
+A2: You can present Capstone Project at any time before/by Week 11. The 2-hour block listed on the schedule is a suggested timeframe - But you can coordinate directly with your mentor and manager to schedule a time that works the best. 
 
-.controls button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.controls button:hover {
-  background-color: #45a049;
-}
-
+Q3: Who will be my target audience?
+A3: Your target audience will be your manager and mentor.
 
 
 

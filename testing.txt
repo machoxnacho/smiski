@@ -32,10 +32,29 @@ smiski/
 └── .dockerignore
 
 --------------------------------------------------------------------------------------------------------------------
-ECS -> Cluster -> my-cluster -> Services -> Smiski-backend-task-service -> Service auto scaling -> cpu-scaling
+1. Amazon SNS – Scaling / Alert Notifications
 
-EC2 -> ASG -> Infra-ECS-Cluster-my-cluster -> ECSManagedAutoScalingPolicy
+Pillar: Operational Excellence & Reliability
 
+Why: Automates operational awareness by notifying you (or your team) when ECS services scale in/out or when CPU utilization hits thresholds, ensuring quick response to changes in demand.
+
+2. Amazon GuardDuty – Threat Detection
+
+Pillar: Security
+
+Why: Adds continuous monitoring for malicious activity and unauthorized access attempts, going beyond WAF to detect threats at the account and network level.
+
+3. Amazon CloudFront – Global Content Delivery
+
+Pillar: Performance Efficiency & Security
+
+Why: Speeds up content delivery globally by caching static assets at edge locations, reducing latency and providing additional DDoS protection with AWS Shield Standard.
+
+4. Multi-Region ECS Deployment
+
+Pillar: Reliability & Resilience
+
+Why: Increases availability by deploying ECS services across multiple AWS regions, ensuring the application remains operational during regional outages.
 Capstone Project 
 
 Q1: What is the required format for the Capstone presentation and submission?

@@ -32,7 +32,9 @@ smiski/
 └── .dockerignore
 
 --------------------------------------------------------------------------------------------------------------------
+ECS -> Cluster -> my-cluster -> Services -> Smiski-backend-task-service -> Service auto scaling -> cpu-scaling
 
+EC2 -> ASG -> Infra-ECS-Cluster-my-cluster -> ECSManagedAutoScalingPolicy
 
 Capstone Project 
 

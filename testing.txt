@@ -133,3 +133,25 @@ Success Metrics/Goals:
 
 By completing this project, you will gain hands-on experience with container orchestration, load balancing, auto-scaling, and web application security. You'll develop skills in designing resilient and scalable architectures for containerized applications, which are crucial for modern cloud deployments and support roles.
 
+
+
+
+
+Is no more than six pages long. A one-pager is often actually a two-pager, so there's no strict limit. However, the six-pager cannot be longer. The author can provide as much supporting data as needed in appendices, but there is no guarantee that anyone will read the appendices accompanying a narrative. It is not recommended to move text into an appendix that must be read for the narrative to make sense. The appendices are there for reference only.
+Is formatted and readable. There is no strict rule on formatting but we have a list of best practices here.
+Clearly states the objective or purpose in the first paragraph. Purpose statements are concise and provide the reader with a clear reason for the narrative, whether it is for decision-making, information sharing, a project update, or something else about the topic area.
+Makes a recommendation early in the document. Have an upfront summary of your recommendations. Not everyone will have time to read the entire document, so help them understand your recommendation and reasoning early in the narrative. Your recommendation should also include how you will measure its success.
+Calls out the next steps at the end. Your final document should be the actionable long-term vision with big ideas, not a summary of what you did during the project. The recommendations should be supported by data that cover the deliverables in the short, medium, and long-term. Consider the risks and alternatives, but present your recommendations of the best path forward with a clear roadmap for next steps
+
+
+
+Clear purpose for the document
+Data that describes the problem or current situation
+Recommended solution and/or next steps
+Data that supports the recommendation
+Concise writing style, with no subjective descriptors or vague words
+Visually clean, easy to read
+Addresses potential concerns or questions
+No longer than 6 pages, plus appendices as needed
+Additional supporting data in appendices
+Draft versions reviewed by others for feedback
